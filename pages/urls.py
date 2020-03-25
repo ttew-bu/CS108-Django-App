@@ -1,4 +1,4 @@
-#file: hello_world/urls.py
+#file: pages/urls.py
 #description: direct URL requests to view functions
 
 from django.urls import path
