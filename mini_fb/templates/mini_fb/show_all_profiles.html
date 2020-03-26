@@ -1,0 +1,32 @@
+<!-- show_all_profiles.html Tristan Tew
+this template correctly formats the data for 
+the mini fb profiles-->
+<head>
+    <title>MiniFacebook</title>
+</head>
+<h1>MiniFacebook</h1>
+
+<h2> Showing All Profiles</h2>
+<!--Border used to debug the layout of the table; even
+column widths used for visualization-->
+<table border=0>
+    <colgroup>
+        <col span='1' style="width: 30%">
+        <col span='1' style="width: 30%">
+        <col span='1' style="width: 30%">
+    </colgroup>
+    <tr>
+        <th>Name</th>
+        <th>Hometown</th>
+        <th>Image</th>
+    </tr>
+    <!--For loop to populate the table that utilizes profile data-->
+    {% for profile in show_all_profiles %}
+    <tr>
+        <td>{{profile.first_name}} {{profile.last_name}} </td>
+        <td>{{profile.city}}</td>
+        <td><img src="{{profile.profile_image_url}}" style="max-width: 250;"></td>
+    </tr>
+    {% endfor %}
+
+</table>
