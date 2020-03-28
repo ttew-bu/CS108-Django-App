@@ -1,0 +1,18 @@
+<!--templates/person.txt-->
+
+<h1>All Quotes by {{person.name}}</h1>
+
+<ul>
+    {% for quote in person.get_all_quotes %}
+    <li>{{quote.text}}</li>
+    {% endfor %}
+
+</ul>
+
+<h2>All images of {{person.name}}</h2>
+
+<ul>
+    {% for image in person.get_all_images %}
+    <li><img src='{{image}}' style='width:200'></li>
+    {% endfor %}
+</ul>
