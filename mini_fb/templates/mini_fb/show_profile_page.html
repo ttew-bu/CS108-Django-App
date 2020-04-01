@@ -1,0 +1,42 @@
+<!-- show_all_profiles.html Tristan Tew
+this template correctly formats the data for 
+the mini fb profiles-->
+<head>
+    <title>Mini Facebook</title>
+</head>
+{% extends 'mini_fb/base.html' %}
+
+{% block content %}
+<!--The profile name was centered to match the example-->
+<center>
+<h2> {{profile.first_name}} {{profile.last_name}}</h2>
+</center>
+<!--The image profile width -->
+<img src="{{profile.profile_image_url}}" style="max-width: 800;max-height: 600;">
+
+<!--table used for the rest of the information so it was evenly spaced-->
+<table>
+    <tr>
+        <td>{{profile.city}}</td>
+    </tr>
+    <tr>
+        <td>{{profile.email_address}}</td>
+    </tr>
+</table>
+<br>
+<!--The following table populates with each new status message-->
+<h1>Status Messages</h1>
+<table>
+    <tr>
+        <th>Time</th>
+        <th>Message</th>
+    <!-- the following for loop populates a table with every new status entry-->
+    </tr>
+    {% for status in profile.get_status_messages %}
+    <tr>
+        <td>{{status.timestamp}}</td>
+        <td>{{status.message}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

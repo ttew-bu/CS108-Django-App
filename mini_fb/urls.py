@@ -3,9 +3,10 @@
 #description: the urls page for the mini_fb case 
 
 from django.urls import path
-from .views import ShowAllProfilesView #import the mini fb class definition
+from .views import * #import the mini fb class definitions import 
 
 urlpatterns = [
     #this maps the URL to the view 
-    path('', ShowAllProfilesView.as_view(), name='show_all_profiles')
+    path('', ShowAllProfilesView.as_view(), name='show_all_profiles'),
+    path('profile/<int:pk>', ShowProfilePageView.as_view(), name='show_profile_page') #new url
 ]

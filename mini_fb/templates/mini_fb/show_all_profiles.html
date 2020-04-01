@@ -1,9 +1,13 @@
-<!-- show_all_profiles.html Tristan Tew
-this template correctly formats the data for 
-the mini fb profiles-->
+<!--show_all_profiles.html.html
+Tristan Tew
+profile pages for all-->
 <head>
     <title>MiniFacebook</title>
 </head>
+
+{% extends 'mini_fb/base.html'%}
+
+{% block content %}
 <h1>MiniFacebook</h1>
 
 <h2> Showing All Profiles</h2>
@@ -23,10 +27,11 @@ column widths used for visualization-->
     <!--For loop to populate the table that utilizes profile data-->
     {% for profile in show_all_profiles %}
     <tr>
-        <td>{{profile.first_name}} {{profile.last_name}} </td>
+        <td><a href="{% url 'show_profile_page' profile.pk %}">{{profile.first_name}} {{profile.last_name}} </a></td>
         <td>{{profile.city}}</td>
-        <td><img src="{{profile.profile_image_url}}" style="max-width: 250;"></td>
+        <td><a href="{% url 'show_profile_page' profile.pk %}"> <img src="{{profile.profile_image_url}}" style="max-width: 250;"></a></td>
     </tr>
     {% endfor %}
 
 </table>
+{% endblock %}

@@ -1,0 +1,19 @@
+<!--mini_fb/base.html
+Tristan Tew
+Creates standard page with html tags-->
+
+<html>
+    <head>
+        <title>Links</title>
+    </head>
+    <body>
+    <!--navigation links-->
+    <header>
+        <a href="{% url 'show_all_profiles' %}">Home</a>
+    </header>
+
+    <!-- this content block will be filled in by another template
+    which extends this base.html page. -->
+    {% block content %}
+    {% endblock %}
+</html>
