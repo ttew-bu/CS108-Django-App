@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 #file:views.py
 #author: Tristan Tew (ttew@bu.edu)
-#description:
+#description: views file for mini facebook
 
 # Create your views here.
 
