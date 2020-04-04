@@ -10,10 +10,9 @@ the mini fb profiles-->
 <!--The profile name was centered to match the example-->
 <center>
 <h2> {{profile.first_name}} {{profile.last_name}}</h2>
-</center>
 <!--The image profile width -->
 <img src="{{profile.profile_image_url}}" style="max-width: 800;max-height: 600;">
-
+</center>
 <!--table used for the rest of the information so it was evenly spaced-->
 <table>
     <tr>
@@ -23,9 +22,29 @@ the mini fb profiles-->
         <td>{{profile.email_address}}</td>
     </tr>
 </table>
+    <a href="{% url 'update_profile' profile.pk %}">Edit Profile</a>
 <br>
-<!--The following table populates with each new status message-->
+<!--The following table lays out the interface for posting a status-->
+<form method='POST', action="{% url 'post_status' profile.pk %}">
+    <!-- the line above includes an action that will post the contents of this message 
+    to the associated profile using the url for posting statuses-->
+    {% csrf_token %}
+    <table>
+    {% for field in create_status_form %}
+        <tr>
+            <th>New Status Message</th>
+            <td>{{field}}</td>
+        </tr>
+    {% endfor %}
+        <tr>
+            <td>
+            <input type="submit" name="Post Status" value="Post Status">
+            </td>
+        </tr>
+    </table>
+</form>
 <h1>Status Messages</h1>
+<!--The following table lays out the interface for statuses posted by a user-->
 <table>
     <tr>
         <th>Time</th>

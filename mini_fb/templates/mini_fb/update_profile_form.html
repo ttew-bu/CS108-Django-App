@@ -1,0 +1,27 @@
+<!--update_profile_form.html
+Tristan Tew
+Update profile pages with this form-->
+<head>
+    <title>MiniFacebook</title>
+</head>
+
+{% extends 'mini_fb/base.html'%}
+
+{% block content %}
+<form method='POST'>
+{% csrf_token %}
+    <table>
+    {% for field in form %}
+    <tr>
+        <th>{{field.name}}</th>
+        <td>{{field}}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td>
+        <input type="submit" name="Update Profile" value="Update Profile">
+        </td>
+    </tr>
+    </table>
+</form>
+{% endblock %}

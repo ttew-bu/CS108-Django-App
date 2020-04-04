@@ -1,0 +1,29 @@
+<!--create_profile_form.html
+Tristan Tew
+create new profile pages with this form-->
+<head>
+    <title>MiniFacebook</title>
+</head>
+
+{% extends 'mini_fb/base.html'%}
+
+{% block content %}
+<form method='POST'>
+{% csrf_token %}
+<!--CSRF used to verify posts with the server-->
+    <table>
+    {% for field in form %}
+    <!--Loop used to populate the page the user is seeing with all necessary components of a profile-->
+    <tr>
+        <th>{{field.name}}</th>
+        <td>{{field}}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td>
+        <input type="submit" name="Create Profile" value="Create Profile">
+        </td>
+    </tr>
+    </table>
+</form>
+{% endblock %}

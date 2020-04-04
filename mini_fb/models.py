@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 #file: models.py
 #author: Tristan Tew (ttew@bu.edu)
@@ -31,7 +32,11 @@ class Profile(models.Model):
         statuses = StatusMessage.objects.filter(profile=self.pk)
 
         return statuses
-
+    
+    #Creates a page to for user to see once a profile is created
+    def get_absolute_url(self):
+        '''Return a URL to display this profile object'''
+        return reverse("show_profile_page", kwargs={"pk": self.pk})
 
 
 class StatusMessage(models.Model):
