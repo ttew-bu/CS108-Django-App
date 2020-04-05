@@ -42,7 +42,7 @@ class Quote(models.Model):
 
     # data attributes of a quote:
     text = models.TextField(blank=True)
-    person = models.ForeignKey('Person', on_delete=models.CASCADE,)
+    person = models.ForeignKey('Person', on_delete=models.CASCADE)
 
     def __str__(self):
         '''Return a string representation of this object **str=repr for django'''
@@ -51,12 +51,17 @@ class Quote(models.Model):
     def get_absolute_url(self):
         '''Return a URL to display this quote object'''
         return reverse("quote", kwargs={"pk": self.pk})
+        
 class Image(models.Model):
     '''Represent an image, which is associated with a Person.'''
 
-    image_url = models.URLField(blank=True)
-    person = models.ForeignKey('Person', on_delete=models.CASCADE,)
+    image_url = models.URLField(blank=True) # url as a string
+    image_file = models.ImageField(blank=True) # an actual image
+    person = models.ForeignKey('Person', on_delete=models.CASCADE)
 
     def __str__(self):
         '''Return a string representation of this image.'''
-        return self.image_url
+        if self.image_url:
+            return self.image_url
+        else:
+            return self.image_file.url
