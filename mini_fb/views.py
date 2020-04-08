@@ -10,8 +10,8 @@ from django.shortcuts import render
 from .models import *
 from django.views.generic import *
 from .forms import *
-from django.shortcuts import redirect
-from django.urls import reverse
+from django.shortcuts import *
+from django.urls import *
 
 class ShowAllProfilesView(ListView):
     ''' subclass of listview to display all profiles'''
@@ -31,10 +31,13 @@ class ShowProfilePageView(DetailView): #new view to show indiviudal profiles; de
 
     # obtain the default context data (a dictionary) from the superclass; 
     # this will include the Profile record for this page view
+
         context = super(ShowProfilePageView, self).get_context_data(**kwargs)
+
     # create a new CreateStatusMessageForm, and add it into the context dictionary
         form = CreateStatusMessageForm()
         context['create_status_form'] = form
+
     # return this context dictionary
         return context
 
@@ -50,24 +53,91 @@ class UpdateProfileView(UpdateView):
     template_name = "mini_fb/update_profile_form.html" #the location of the template within the django directory
     queryset = Profile.objects.all() #allows all objects of the Profile to be accessed
 
+class DeleteStatusMessageView(DeleteView):
+    '''View to delete a status message'''
+    
+    template_name = "mini_fb/delete_status_form.html"
+    queryset = StatusMessage.objects.all()
+    #success_url = "../../show_all_profiles" this success url was used for testing purposes, 
+    # but we now have a function for this to run correctly and display an individual profile 
+
+    def get_context_data(self,**kwargs):
+        '''returns a dictionary with context data for the template'''
+
+        #get the context data for the exact message that we are trying to delete
+        context = super(DeleteStatusMessageView, self).get_context_data(**kwargs)
+
+        #define the status that we are looking for with a primary key lookup 
+        # and put it in the context dictionary 
+        status = StatusMessage.objects.get(pk=self.kwargs['status_pk'])
+        
+        context['status']=status # adds this to the dictionary 
+        
+        #return the context dictionary:
+        return context
+    
+    def get_object(self):
+        '''returns the status message to be deleted'''
+        
+        # read the URL data values into variables
+        profile_pk = self.kwargs['profile_pk']
+        status_pk = self.kwargs['status_pk']
+
+        # find the StatusMessage object, and return it
+        status = StatusMessage.objects.get(pk=status_pk)
+
+        #return the status that we want    
+        return status
+
+    def get_success_url(self):
+        '''Return the URL to which we are redirected upon deletion'''
+
+        # read the URL data values into variables
+        profile_pk = self.kwargs['profile_pk']
+        status_pk = self.kwargs['status_pk']
+
+        #find the status itself
+        status = StatusMessage.objects.filter(pk=status_pk).first()
+
+        #find the profile associated with the status; this is already covered with profile_pk
+        #profile_user = status.profile
+
+        #reverse and show the profile page
+        page = reverse('show_profile_page', kwargs={'pk':profile_pk})
+        return page
+
 def create_status_message(request, pk):
     '''Process a form submission to post a new status message.'''
-    # find the profile that matches the `pk` in the URL
+
+    # find the profile that matches the "pk" in the URL
     profile = Profile.objects.get(pk=pk)
 
-    # if and only if we are processing a POST request, try to read the data
-    if request.method == 'POST':
+    #name the form you want to process the request with 
+    form = CreateStatusMessageForm(request.POST or None, request.FILES or None) #without the files request, it wont' add pictures. 
 
-        # read the data from this form submission
-        message = request.POST['message']
+    # The method below is from a previous assignment. If not commented out, it will create a double post when creating a status. 
+    # if and only if we are processing a POST request, try to read the data; OLD for assignment 17
+    # if request.method == 'POST':
 
-        # save the new status message object to the database
-        if message:
+    #     # read the data from this form submission
+    #     message = request.POST['message']
 
-            sm = StatusMessage()
-            sm.profile = profile
-            sm.message = message
-            sm.save()
+    #     # save the new status message object to the database
+    #     if message:
 
-    # redirect the user to the show_profile_page view
-    return redirect(reverse('show_profile_page', kwargs={'pk': pk}))
+    #         sm = StatusMessage()
+    #         sm.profile = profile
+    #         sm.message = message
+    #         sm.save()
+
+    # NEW for assignment 18 creates statuses with images by checking that we're using a valid form; makes form 17 redundant
+
+    if form.is_valid: 
+        status = form.save(commit=False) # create the status object, but don't save it
+        status.profile = profile # map the status to the profile
+        status.save() #save the status to the profile
+
+    # redirect to the profile, pre-submission
+
+    url = reverse('show_profile_page', kwargs={'pk':pk})
+    return redirect(url)

@@ -25,14 +25,14 @@ the mini fb profiles-->
     <a href="{% url 'update_profile' profile.pk %}">Edit Profile</a>
 <br>
 <!--The following table lays out the interface for posting a status-->
-<form method='POST', action="{% url 'post_status' profile.pk %}">
+<form method='POST', enctype="multipart/form-data", action="{% url 'post_status' profile.pk %}">
     <!-- the line above includes an action that will post the contents of this message 
     to the associated profile using the url for posting statuses-->
     {% csrf_token %}
     <table>
     {% for field in create_status_form %}
         <tr>
-            <th>New Status Message</th>
+            <th>{{field.name}}</th>
             <td>{{field}}</td>
         </tr>
     {% endfor %}
@@ -54,7 +54,13 @@ the mini fb profiles-->
     {% for status in profile.get_status_messages %}
     <tr>
         <td>{{status.timestamp}}</td>
-        <td>{{status.message}}</td>
+        <td>{{status.message}}   
+            <br>
+        {% if status.image %}
+            <img src='{{status.image.url}}' style='max-width: 600;'>
+            {% endif %}
+        </td>
+        <td><a href="{% url 'delete_status' profile_pk=profile.pk status_pk=status.pk %}">Delete</td>
     </tr>
     {% endfor %}
 </table>

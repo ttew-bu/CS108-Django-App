@@ -104,11 +104,12 @@ def add_image(request, pk):
     #check if the form is valid, save if so
     if form.is_valid():
 
-            image = form.save(commit=False) #create the Image object, but not save
-            image.person = person
-            image.save() #store in db
+        image = form.save(commit=False) #create the Image object, but not save
+        image.person = person
+        image.save() #store in db
+        
     else:
         print("Error: the form was not valid")
     # redirect to a new URL, display person page
-    url = reverse('person', kwargs={'pk':pk})
+    url = reverse('show_profile_page', kwargs={'pk':pk})
     return redirect(url)
