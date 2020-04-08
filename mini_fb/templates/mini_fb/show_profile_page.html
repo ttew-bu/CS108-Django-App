@@ -51,16 +51,16 @@ the mini fb profiles-->
         <th>Message</th>
     <!-- the following for loop populates a table with every new status entry-->
     </tr>
-    {% for status in profile.get_status_messages %}
+    {% for status in profile.get_status_messages %} <!--Statuses have been appended to access their specific attribute in each scriplet-->
     <tr>
         <td>{{status.timestamp}}</td>
         <td>{{status.message}}   
             <br>
         {% if status.image %}
-            <img src='{{status.image.url}}' style='max-width: 600;'>
+            <img src='{{status.image.url}}' style='max-height: 450; max-width: 550;'><!--Updated size bounds to make statuses display more cleanly -->
             {% endif %}
         </td>
-        <td><a href="{% url 'delete_status' profile_pk=profile.pk status_pk=status.pk %}">Delete</td>
+        <td><a href="{% url 'delete_status' profile_pk=profile.pk status_pk=status.pk %}">Delete</td> <!--Given to us on the assignment page-->
     </tr>
     {% endfor %}
 </table>

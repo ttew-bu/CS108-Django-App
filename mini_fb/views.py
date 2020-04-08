@@ -79,7 +79,7 @@ class DeleteStatusMessageView(DeleteView):
     def get_object(self):
         '''returns the status message to be deleted'''
         
-        # read the URL data values into variables
+        # read the URL data values into variables, this is given in the assignment page
         profile_pk = self.kwargs['profile_pk']
         status_pk = self.kwargs['status_pk']
 
@@ -92,15 +92,15 @@ class DeleteStatusMessageView(DeleteView):
     def get_success_url(self):
         '''Return the URL to which we are redirected upon deletion'''
 
-        # read the URL data values into variables
-        profile_pk = self.kwargs['profile_pk']
-        status_pk = self.kwargs['status_pk']
+        # read the URL data values into variables, both pk definitions were given in the assignment page
+        profile_pk = self.kwargs['profile_pk'] #gives us the pk of the profile; 
+        
+        #we can use this for the reverse function instead of looking it up filtering through statuses
+        status_pk = self.kwargs['status_pk'] #pk for status
 
         #find the status itself
         status = StatusMessage.objects.filter(pk=status_pk).first()
 
-        #find the profile associated with the status; this is already covered with profile_pk
-        #profile_user = status.profile
 
         #reverse and show the profile page
         page = reverse('show_profile_page', kwargs={'pk':profile_pk})
