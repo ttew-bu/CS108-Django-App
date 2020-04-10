@@ -101,9 +101,10 @@ class DeleteStatusMessageView(DeleteView):
         #find the status itself
         status = StatusMessage.objects.filter(pk=status_pk).first()
 
-
         #reverse and show the profile page
         page = reverse('show_profile_page', kwargs={'pk':profile_pk})
+
+        #return the page that you want
         return page
 
 def create_status_message(request, pk):
@@ -141,3 +142,40 @@ def create_status_message(request, pk):
 
     url = reverse('show_profile_page', kwargs={'pk':pk})
     return redirect(url)
+
+class ShowNewsFeedView(DetailView):
+    '''DetailView that outlines one newsfeed for one profile'''
+
+    model = Profile #use the profile model 
+    template_name = 'mini_fb/show_news_feed.html'
+    context_object_name = 'profile'
+
+class ShowPossibleFriendsView(DetailView):
+    '''DetailView that outlines possible friends for a user'''
+
+    model = Profile #use the profile model 
+    template_name = "mini_fb/show_possible_friends.html"
+    context_object_name= 'profile'
+
+def add_friend(request, profile_pk, friend_pk): #new customview! 
+    '''Process the add request for a new friend'''
+
+    #find the profile of the person adding the friend
+    profileuser = Profile.objects.get(pk=profile_pk)
+
+    # find the profile of the person being added 
+    friended = Profile.objects.get(pk=friend_pk)
+
+    #add the profile to using the add method
+    profileuser.friends.add(friended)
+    
+    #save the addition
+    profileuser.save()
+    
+    #return create the url to redirect
+    url = redirect(reverse('show_profile_page', kwargs={'pk':profile_pk}))
+
+    #return the URL
+    return url
+    
+

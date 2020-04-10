@@ -9,6 +9,7 @@ Update profile pages with this form-->
 
 {% block content %}
 <form method='POST'>
+<!--Basic loop used for filling profile info and allowing the user to update it-->
 {% csrf_token %}
     <table>
     {% for field in form %}

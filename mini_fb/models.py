@@ -3,11 +3,9 @@ from django.urls import reverse
 
 #file: models.py
 #author: Tristan Tew (ttew@bu.edu)
-#description: creating the model for the profile to display on mini_fb
+#description: creating the model for the profile, status message, and more to display on mini_fb
 
-# Create your models here.
-
-#This model 
+# Create your models here!
 
 class Profile(models.Model):
     '''Creates the format for the profile model'''
@@ -18,6 +16,11 @@ class Profile(models.Model):
     city = models.TextField(blank=True)
     email_address = models.TextField(blank=True)
     profile_image_url = models.URLField(blank=True)
+    birth_date = models.DateField(blank=True) #added and migrated to display the birthday from the form a few assignments ago
+    member_since = models.DateField(auto_now_add=True) #added to display a full profile; timestamps via auto_now_add
+
+    #NEW create the friend field to relate to other profiles
+    friends = models.ManyToManyField("self", blank=True) 
 
     #create a string representation of the data
 
@@ -36,8 +39,56 @@ class Profile(models.Model):
     #Creates a page to for user to see once a profile is created
     def get_absolute_url(self):
         '''Return a URL to display this profile object'''
+
         return reverse("show_profile_page", kwargs={"pk": self.pk})
 
+    #utilizes a query and the friend field to create a list of friends
+    def get_friends(self):
+        '''Return a list of friends related to one profile'''
+
+        #find a list of friends for the profile 
+        friends = Profile.objects.filter(friends=self.pk)
+
+        #return the list 
+        return friends
+
+    #utilizes a query, status messages, and the friends field 
+    def get_news_feed(self):
+        '''returns a list of friends' status message'''
+
+        news = StatusMessage.objects.all().order_by("-timestamp") #given in assignment, lays out all statuses
+
+        #defines a friendlist for the given profile 
+        friendlist = self.get_friends()
+
+        #defines the friends given in the profile via the __in operator
+        friend_news = news.filter(profile__in=friendlist)
+
+        #defines news from your own profile since it is excluded in the previous query
+        self_news = news.filter(profile=self.pk)
+
+        #combine both querysets
+        all_news = friend_news|self_news
+
+        #return all of the news in one queryset that will display through the HTML page 
+        return all_news
+
+    #utilizes a query, status message, and the friends
+    def get_friend_suggestions(self):
+        '''returns a list of potential friends'''
+
+        #list of all possible friends
+        possible_friends = Profile.objects.all()
+
+        #list of all friends associated with a profile
+        current_friends = self.get_friends()
+
+        #list of all friends, less those currently friended and less yourself. 
+        list_friends = possible_friends.exclude(friends=self).exclude(id=self.pk)
+
+
+        #return the list offriends to be added 
+        return list_friends
 
 class StatusMessage(models.Model):
     '''Create the format for a status message'''

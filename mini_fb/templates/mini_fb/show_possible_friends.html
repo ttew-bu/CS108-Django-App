@@ -1,0 +1,24 @@
+<!--show_possible_friends.html
+Tristan Tew
+Shows which profiles are not yours, nor already friends-->
+
+{% extends 'mini_fb/base.html'%}
+
+{% block content %}
+
+<a href="{% url 'show_profile_page' profile.pk%}">Back to {{profile.first_name}}'s profile</a>
+<h1> {{profile.first_name}}'s Friend Suggestions </h1>
+<table border="0" cellspacing='15'>
+    <!-- the following for loop populates a table with every new status entry-->
+    {% for friend in profile.get_friend_suggestions %} <!--Statuses have been appended to access their specific attribute in each scriplet-->
+    <tr>
+        <td> <img src="{{friend.profile_image_url}}" style="max-width: 150; max-height: 150"></td>
+        <td>{{friend.first_name}} {{friend.last_name}}</a></td>
+        <td><form method='GET' action= "{% url 'add_friend' profile_pk=profile.pk friend_pk=friend.pk %}"> <!--url only loads when a value is hard-coded in; homepage works fine -->
+            {% csrf_token %}
+            <input type='submit' name='Add Friend' value='Add Friend'></td>
+    </tr>
+    {% endfor %}
+</table>
+<hr>
+{% endblock %}

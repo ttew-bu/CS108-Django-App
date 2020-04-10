@@ -7,43 +7,93 @@ the mini fb profiles-->
 {% extends 'mini_fb/base.html' %}
 
 {% block content %}
-<!--The profile name was centered to match the example-->
-<center>
-<h2> {{profile.first_name}} {{profile.last_name}}</h2>
+<h1> {{profile.first_name}} {{profile.last_name}}'s Profile Page</h1>
 <!--The image profile width -->
-<img src="{{profile.profile_image_url}}" style="max-width: 800;max-height: 600;">
-</center>
-<!--table used for the rest of the information so it was evenly spaced-->
 <table>
     <tr>
-        <td>{{profile.city}}</td>
-    </tr>
-    <tr>
-        <td>{{profile.email_address}}</td>
+        <td><img src="{{profile.profile_image_url}}" style="max-width: 400;max-height: 400;"></td>
+<!--table used for the rest of the information so it was evenly spaced; nested the tables to keep the original structures
+while also making them more cleanly displayed-->
+        <td>
+            <table>
+                <tr>
+                    <th>
+                        Name:
+                    </th>
+                    <td> {{profile.first_name}} {{profile.last_name}}
+                    </td>
+                </tr>
+                <tr>
+                    <th> Email:
+                    </th>
+                    <td>{{profile.email_address}}
+                    </td>
+                </tr>
+                <tr>
+                    <th> Birthday:
+                    </th>
+                    <td>{{profile.birth_date}}</td>
+                </tr>
+                <tr>
+                    <th> Member Since:
+                    </th>
+                    <td>
+                        {{profile.member_since}}
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <h2>Post a Status!</h2>
+            <!--The following table lays out the interface for posting a status-->
+            <form method='POST', enctype="multipart/form-data", action="{% url 'post_status' profile.pk %}">
+                <!-- the line above includes an action that will post the contents of this message 
+                to the associated profile using the url for posting statuses-->
+                {% csrf_token %}
+                <table>
+                {% for field in create_status_form %}
+                    <tr>
+                        <th>{{field.name}}</th>
+                        <td>{{field}}</td>
+                    </tr>
+                {% endfor %}
+                    <tr>
+                        <td>
+                        <input type="submit" name="Post Status" value="Post Status">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </td>
     </tr>
 </table>
-    <a href="{% url 'update_profile' profile.pk %}">Edit Profile</a>
-<br>
-<!--The following table lays out the interface for posting a status-->
-<form method='POST', enctype="multipart/form-data", action="{% url 'post_status' profile.pk %}">
-    <!-- the line above includes an action that will post the contents of this message 
-    to the associated profile using the url for posting statuses-->
-    {% csrf_token %}
+<table>
+    <!--Links to other pages related to the profile-->
+    <tr>
+        <td><a href="{% url 'update_profile' profile.pk %}">Edit Profile</a><td>
+        <td><a href="{%url 'news_feed' profile.pk %}"> Show {{profile.first_name}}'s Newsfeed</a></td>
+        <td><a href="{%url 'show_possible_friends' profile.pk %}"> Show possible friends</a></td>
+    </tr>
+</table>
+<!--New functionality for friends-->
+<hr>
+{% if profile.get_friends %}
+<h2>{{profile.first_name}}'s Friends</h2>
+    {% for friend in profile.get_friends %} <!--Not "profile" so as to avoid confusion the loop variables-->
     <table>
-    {% for field in create_status_form %}
-        <tr>
-            <th>{{field.name}}</th>
-            <td>{{field}}</td>
-        </tr>
-    {% endfor %}
-        <tr>
-            <td>
-            <input type="submit" name="Post Status" value="Post Status">
-            </td>
-        </tr>
+    <tr>
+        <td><a href ="{% url 'show_profile_page' friend.pk%}"> <!--Substitution allow navigation to friends' pages-->
+            {{friend.first_name}} {{friend.last_name}}</a></td>
+        <td><img src="{{friend.profile_image_url}}" style="max-width: 150; max-height: 150"></td>
+    </tr>
     </table>
-</form>
-<h1>Status Messages</h1>
+    {% endfor %}
+{% else %}
+<h2>{{profile.first_name}}'s Friends</h2>
+{{profile.first_name}} doesn't have friends. Sad!
+{% endif %}
+<hr>
+<h2>Status Messages</h2>
 <!--The following table lays out the interface for statuses posted by a user-->
 <table>
     <tr>
@@ -54,14 +104,15 @@ the mini fb profiles-->
     {% for status in profile.get_status_messages %} <!--Statuses have been appended to access their specific attribute in each scriplet-->
     <tr>
         <td>{{status.timestamp}}</td>
-        <td>{{status.message}}   
+        <td>{{status.message}}  
             <br>
         {% if status.image %}
-            <img src='{{status.image.url}}' style='max-height: 450; max-width: 550;'><!--Updated size bounds to make statuses display more cleanly -->
+            <img src='{{status.image.url}}' style='max-height: 350; max-width: 350;'><!--Updated size bounds to make statuses display more cleanly -->
             {% endif %}
         </td>
         <td><a href="{% url 'delete_status' profile_pk=profile.pk status_pk=status.pk %}">Delete</td> <!--Given to us on the assignment page-->
     </tr>
     {% endfor %}
 </table>
+
 {% endblock %}
