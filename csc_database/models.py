@@ -93,7 +93,6 @@ class ServiceEvent(models.Model):
     start_time = models.TimeField(blank=False)
     duration = models.DecimalField(blank=False, max_digits= 5, decimal_places = 2)
     #capacity = models.IntegerField(blank=True, max=100)
-    #spots_remaining = 
     def __str__(self):
         '''return a string representation of the Service Event Class'''
         return '%s %s %s Start:%s Duration:%s' % (self.event_name, self.cp.cp_name, self.service_date, self.start_time, self.duration)
