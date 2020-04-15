@@ -1,0 +1,105 @@
+{% extends 'csc_database/base.html' %}
+<head>
+    <Title> {{volunteer.first_name}}'s Volunteer History</Title>
+</head>
+
+{% block content %}
+<h1>{{volunteer.first_name}} {{volunteer.last_name}}'s Volunteer History</h1>
+Edit {{volunteer.first_name}}'s Information
+<br>
+<table>
+    <tr>
+    <td>
+    <table>
+        <h2>
+            Volunteer Information
+        </h2>
+        <tr>
+            <td>Name:</td>
+            <td> {{volunteer.first_name}} {{volunteer.last_name}}</td>
+        </tr>
+        <tr>
+            <td>Class Year:</td>
+            <td>{{volunteer.class_year}}</td>
+        </tr>
+        <tr>
+            <td>BU ID:</td>
+            <td>{{volunteer.bu_id}}</td>
+        </tr>
+        <tr>
+            <td>Phone:</td>
+            <td> {{volunteer.phone}}</td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td> {{volunteer.email}}</td>
+        </tr>
+        <tr>
+            <td>Service Focus Area:</td>
+            <td> {{volunteer.pref_service}}</td>
+        </tr>
+    </table>
+    </td>
+    <td>
+    <h2>Upcoming Service Events</h2>
+    <table>
+        {% if volunteer.completed_events %}
+        <tr>
+            <center>
+            <th>Opportunity Name</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>Hours</th>
+            </center>
+        </tr>
+        {% for event in volunteer.completed_events %}
+        <center>
+        <tr>
+            <td>{{event.event_name}}</td>
+            <td>{{event.service_date}}</td>
+            <td>{{event.start_time}}</td>
+            <td>{{event.duration}}</td>
+            </td>
+        </tr>
+        </center>
+        {% endfor %}
+        {% endif %}
+    </table>
+    </td>
+    </tr>
+</table>
+<br>
+<table>
+    <tr>
+    <td>
+    <h2>Past Service Events</h2>
+    <table>
+        {% if volunteer.completed_events %}
+        <tr>
+            <center>
+            <th>Opportunity Name</th>
+            <th>Date</th>
+            </center>
+        </tr>
+        {% for event in volunteer.completed_events %}
+        <center>
+        <tr>
+            <td>{{event.event_name}}</td>
+            <td>{{event.service_date}}</td>
+        </tr>
+        </center>
+        {% endfor %}
+        {% endif %}
+    </table>
+    </td>
+    <td>
+    <h2>Individual Volunteer Impact</h2>
+    {% if volunteer.hours_served %}
+    {{volunteer.first_name}} has served {{volunteer.hours_served}} hours. 
+    {% else %}
+    {{volunteer.first_name}} has not performed any service. 
+    {% endif %}
+    </td>
+    </tr>
+</table>
+{% endblock %}

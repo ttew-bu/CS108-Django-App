@@ -1,0 +1,28 @@
+<!--all_partners.html
+Tristan Tew (ttew@bu.edu
+This code creates the all community partners display view-->
+
+<head>
+    <title>CSC Community Partners</title>
+</head>
+
+{% extends 'csc_database/base.html'%}
+
+{% block content %}
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Logo</th>
+        <th>Focus Area</th>
+    </tr>
+    {% for partner in all_partners %}
+    <tr>
+    <td><a href ="{% url 'show_partner' partner.pk %}">{{partner.cp_name}}</a></td>
+    <td><center><img src="{{partner.cp_image.url}}" style="max-width: 250;"></center></td>
+    <td>{{partner.cp_type}}</td>
+    </tr>
+
+{% endfor %}
+</table>
+{% endblock %}

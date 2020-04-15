@@ -1,0 +1,59 @@
+<!--show_partner.html
+Tristan Tew (ttew@bu.edu)
+This code creates the individual display page for
+a community partner-->
+{% extends 'csc_database/base.html' %}
+<head>
+    <Title> {{partner.cp_name}}'s Partner Page</Title>
+</head>
+
+{% block content %}
+<h1>{{partner.cp_name}}</h1>
+<img src="{{partner.cp_image.url}}" style="max-width: 250;">
+<br>
+<h3>{{partner.cp_address}}</h3>
+<br>
+{{partner.cp_mission}}
+<br>
+
+<h2>Upcoming Volunteer Opportunities at {{partner.cp_name}}</h2>
+<table>
+    <colgroup>
+        <col span='1' style="width: 20%">
+        <col span='1' style="width: 20%">
+        <col span='1' style="width: 20%">
+        <col span='1' style="width: 20%">
+        <col span='1' style="width: 20%">
+    </colgroup>
+    {% if partner.events_calendar %}
+        <tr>
+            <center>
+            <th>Opportunity Name</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>Duration (in hours)</th>
+            <th>Volunteer Slots Available</th>
+            </center>
+        </tr>
+        {% for event in partner.events_calendar %}
+        <center>
+        <tr>
+            <td>{{event.event_name}}</td>
+            <td>{{event.service_date}}</td>
+            <td>{{event.start_time}}</td>
+            <td>{{event.duration}}</td>
+            <td>0/4</td>
+        </tr>
+        </center>
+        {% endfor %}
+    {% else %}
+    There are no events at {{partner.cp_name}}, 
+    would like you like to create one here?
+    {% endif %}
+</table>
+<br>
+
+<h2>BU Student Service Impact</h2>
+
+<br>
+{% endblock %}

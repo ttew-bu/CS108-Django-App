@@ -1,0 +1,32 @@
+<!--base.html
+Tristan Tew (ttew@bu.edu
+This code creates the top and bottom banner for 
+the CSC database-->
+
+<html>
+    <body>
+    <!--navigation links-->
+    <header>
+        <table>
+            <tr>
+                <td><a href = "https://www.bu.edu/csc"><img src="https://www.bu.edu/csc/files/titlebar.gif"></a></td>
+                <td><a href = "{% url 'all_partners' %}">Partner Database</a></td>
+                <td><a href = "{% url 'all_volunteers' %}">Volunteer Database</a></td>
+            </tr>
+        </table>
+    </header>
+    <hr>
+
+    <!-- this content block will be filled in by another template
+    which extends this base.html page. -->
+    {% block content %}
+    {% endblock %}
+
+    <hr>
+    This database has been created for limited use within 
+    CS108 and for distribution across Boston University. 
+    <br>
+    Not all community partner information is accurate and no real volunteer 
+    information was used in the creation of this demo. 
+    
+</html>
