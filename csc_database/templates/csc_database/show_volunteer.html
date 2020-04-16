@@ -43,26 +43,26 @@ Edit {{volunteer.first_name}}'s Information
     <td>
     <h2>Upcoming Service Events</h2>
     <table>
-        {% if volunteer.completed_events %}
+        {% if volunteer.incomplete_events %}
         <tr>
             <center>
             <th>Opportunity Name</th>
-            <th>Date</th>
-            <th>Start Time</th>
+            <th>Date and Time</th>
             <th>Hours</th>
             </center>
         </tr>
-        {% for event in volunteer.completed_events %}
+        {% for event in volunteer.incomplete_events %}
         <center>
         <tr>
             <td>{{event.event_name}}</td>
             <td>{{event.service_date}}</td>
-            <td>{{event.start_time}}</td>
             <td>{{event.duration}}</td>
             </td>
         </tr>
         </center>
         {% endfor %}
+        {% else %}
+        {{volunteer.first_name}} is not scheduled for any future events. 
         {% endif %}
     </table>
     </td>
@@ -78,7 +78,7 @@ Edit {{volunteer.first_name}}'s Information
         <tr>
             <center>
             <th>Opportunity Name</th>
-            <th>Date</th>
+            <th>Date and Time</th>
             </center>
         </tr>
         {% for event in volunteer.completed_events %}
@@ -89,6 +89,8 @@ Edit {{volunteer.first_name}}'s Information
         </tr>
         </center>
         {% endfor %}
+        {% else %}
+        {{volunteer.first_name}} has not signed up for an event before. 
         {% endif %}
     </table>
     </td>

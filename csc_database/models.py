@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import *
 from phonenumber_field.modelfields import *
+from datetime import *
 # Create your models here.
 
 
@@ -34,13 +35,31 @@ class Volunteer(models.Model):
 
         events = ServiceEvent.objects.filter(volunteer=self.pk)
 
-        return events
+        today = datetime.now(tz=timezone.utc)
+
+        com_events = events.filter(service_date__lte=today)
+
+        return com_events
+
+    def incomplete_events(self):
+        '''return a list of completed service events'''
+
+        events = ServiceEvent.objects.filter(volunteer=self.pk)
+
+        today = datetime.now(tz=timezone.utc)
+
+        inc_events = events.filter(service_date__gte=today)
+
+        return inc_events
 
     def hours_served(self):
         '''return the total number of hours served by a volunteer so far'''
 
+        #get today's date for a point of reference
+        today = datetime.now(tz=timezone.utc)
+
         #get the total events in a list to run through
-        events = ServiceEvent.objects.filter(volunteer=self.pk)
+        events = ServiceEvent.objects.filter(volunteer=self.pk).filter(service_date__lte=today)
 
         #set up the accumulator
         hours = 0 
@@ -76,24 +95,52 @@ class CommunityPartner(models.Model):
         return '%s %s Type:%s Value:$%s' % (self.cp_name, self.cp_address, self.cp_type, self.cp_service_value)
 
     def events_calendar(self):
-        '''Filter by pk to group all events for a CP'''
+        '''Filter by pk to group all future events for a CP'''
 
-        events = ServiceEvent.objects.filter(id=self.pk)
+        today = datetime.now(tz=timezone.utc)
+
+        events = ServiceEvent.objects.filter(id=self.pk).filter(service_date__gte=today)
 
         return events
 
+    def old_events(self):
+        '''filter by pk to group all old events for a cp'''
+
+        today = datetime.now(tz=timezone.utc)
+
+        events = ServiceEvent.objects.filter(id=self.pk).filter(service_date__lte=today)
+
+        total = len(events)
+
+        return total
+        
 class ServiceEvent(models.Model):
     '''Creates a model for Service Events including necessary information'''
 
     #Data attributes of a CSC Service Event
     event_name = models.TextField(blank=False)
-    cp = models.OneToOneField(CommunityPartner, on_delete=models.CASCADE) # relationship
+    cp = models.ManyToManyField('CommunityPartner') # relationship
     event_description = models.TextField(blank=False)
-    service_date = models.DateField(blank=False)
-    start_time = models.TimeField(blank=False)
+    service_date = models.DateTimeField(blank=False)
     duration = models.DecimalField(blank=False, max_digits= 5, decimal_places = 2)
     capacity = models.IntegerField(blank=False)
+    #volunteers =  models.ManyToManyField('Volunteer', blank=True)
 
     def __str__(self):
         '''return a string representation of the Service Event Class'''
-        return '%s %s %s Start:%s Duration:%s' % (self.event_name, self.cp.cp_name, self.service_date, self.start_time, self.duration)
+        return '%s %s %s %s' % (self.event_name, self.cp, self.service_date, self.duration)
+
+    def attendance(self):
+        '''return the number of volunteers that will come to the service event'''
+
+        #find the service event
+        event = ServiceEvent.objects.get(pk=self.pk)
+
+        #find define a list of all volunteers with matching service events
+        vols = Volunteer.objects.filter(service_events=event.pk)
+
+        #count the number of volunteers
+        volunteer_count = len(vols)
+
+        #return the count
+        return volunteer_count

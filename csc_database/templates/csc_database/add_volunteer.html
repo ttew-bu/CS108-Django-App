@@ -1,0 +1,30 @@
+<!--add_volunteer.html
+tristan tew
+this page depicts the add a volunteer page and submits 
+user inputs to the server-->
+<head>
+    <title>Add New Volunteer</title>
+</head>
+
+{% extends 'csc_database/base.html' %}
+
+{% block content %}
+<form method='POST'>
+{% csrf_token %}
+<!--CSRF used to verify posts with the server/prevent SQL injection-->
+    <table>
+    {% for field in form %}
+    <!--Loop used to populate the page with volunteer attributes-->
+    <tr>
+        <th>{{field.label}}</th>
+        <td>{{field}}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td>
+        <input type="submit" name="Add Volunteer" value="Add Volunteer">
+        </td>
+    </tr>
+    </table>
+</form>
+{% endblock %}

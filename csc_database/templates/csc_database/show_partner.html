@@ -30,9 +30,8 @@ a community partner-->
             <center>
             <th>Opportunity Name</th>
             <th>Date</th>
-            <th>Start Time</th>
             <th>Duration (in hours)</th>
-            <th>Volunteer Slots Available</th>
+            <th>Volunteer Slots Filled</th>
             </center>
         </tr>
         {% for event in partner.events_calendar %}
@@ -40,9 +39,8 @@ a community partner-->
         <tr>
             <td>{{event.event_name}}</td>
             <td>{{event.service_date}}</td>
-            <td>{{event.start_time}}</td>
             <td>{{event.duration}}</td>
-            <td>{{event.capacity}}/{{event.capacity}}</td>
+            <td>{{event.attendance}}/{{event.capacity}}</td>
         </tr>
         </center>
         {% endfor %}
@@ -54,6 +52,7 @@ a community partner-->
 <br>
 
 <h2>BU Student Service Impact</h2>
-
+Boston University students have completed {{partner.old_events}} events at {{partner.cp_name}} for a total of X hours. 
+The financial equivalent of this volunteer service is $X. 
 <br>
 {% endblock %}

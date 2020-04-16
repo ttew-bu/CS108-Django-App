@@ -32,5 +32,14 @@ class ShowVolunteerPageView(DetailView):
     template_name = 'csc_database/show_volunteer.html'
     context_object_name = 'volunteer'
 
+class CreateVolunteerView(CreateView):
+    '''subclass of createview to add a volunteer'''
+    form_class = CreateVolunteerForm
+    template_name ='csc_database/add_volunteer.html'
+
+class CreatePartnerView(CreateView):
+    '''subclass of createview to add a partner'''
+    form_class = CreatePartnerForm
+    template_name='csc_database/add_partner.html'''
 
 

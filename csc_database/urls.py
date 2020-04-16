@@ -13,6 +13,8 @@ urlpatterns = [
     path('partners', ShowAllCommunityPartnersView.as_view(), name='all_partners'),
     path('volunteers', ShowAllVolunteersView.as_view(), name='all_volunteers'),
     path('partner/<int:pk>', ShowCommunityPartnerPageView.as_view(), name='show_partner'),
-    path('volunteer/<int:pk>', ShowVolunteerPageView.as_view(), name='show_volunteer')
+    path('volunteer/<int:pk>', ShowVolunteerPageView.as_view(), name='show_volunteer'),
+    path('add_volunteer', CreateVolunteerView.as_view(), name='add_volunteer'),
+    path('add_partner', CreatePartnerView.as_view(), name='add_partner'),
 
 ]
