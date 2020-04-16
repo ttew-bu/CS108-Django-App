@@ -45,14 +45,14 @@ a community partner-->
         </center>
         {% endfor %}
     {% else %}
-    There are no events at {{partner.cp_name}}, 
+    There are no events coming up at {{partner.cp_name}}, 
     would like you like to create one here?
     {% endif %}
 </table>
 <br>
 
 <h2>BU Student Service Impact</h2>
-Boston University students have completed {{partner.old_events}} events at {{partner.cp_name}} for a total of {{partner.hours_recieved}} hours. 
-The financial equivalent of this volunteer service is ${{partner.monetary_equiv}}. 
+Boston University students have completed {{partner.sum_old_events}} events at {{partner.cp_name}} for a total of {{partner.hours_recieved}} hours. 
+The total financial equivalent of this volunteer service is ${{partner.monetary_equiv}}. 
 <br>
 {% endblock %}

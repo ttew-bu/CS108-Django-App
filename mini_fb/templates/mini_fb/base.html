@@ -8,11 +8,12 @@ Creates standard page with html tags-->
     </head>
     <body>
     <!--navigation links-->
-    <header>
-        <a href="{% url 'show_all_profiles' %}">Home</a>
-        <a href="{% url 'create_profile' %}">Create Profile</a>
-    </header>
-    <hr>
+        <header >
+            <a href="{% url 'show_all_profiles' %}">Home</a>
+            <a href="{% url 'create_profile' %}">Create Profile</a>
+        </header>
+    
+        <hr>
 
     <!-- this content block will be filled in by another template
     which extends this base.html page. -->

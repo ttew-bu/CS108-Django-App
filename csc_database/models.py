@@ -1,10 +1,9 @@
 from django.db import models
 from django.urls import *
 from datetime import *
-from phonenumber_field.modelfields import *
+from phonenumber_field.modelfields import * #custom field I found online to create a data type just for phone numbers
 
 # Create your models here.
-
 
 class Volunteer(models.Model):
     '''Creates a model for a volunteer including the necessary information'''
@@ -12,12 +11,14 @@ class Volunteer(models.Model):
     #Data attributes of the CSC Volunteer 
     first_name = models.TextField(blank=False)
     last_name = models.TextField(blank=False)
-    phone = PhoneNumberField(blank=False)
+    phone = PhoneNumberField(blank=False) #nomenclature is different to work with the downloaded package
     email = models.EmailField(blank=False)
     bu_id = models.CharField(blank=False, max_length=9)
     class_year = models.CharField(blank=False, max_length=4)
-    service_events = models.ManyToManyField('ServiceEvent', blank=True)
+    service_events = models.ManyToManyField('ServiceEvent', blank=True) 
+    #relationship: A volunteer can attend many events and many vols can go to many events
     
+    #create a subclass to create an optionset on the eventual form and within the django admin
     class PrefService(models.TextChoices):
         '''Subclass to create an option set for the volunteers' focus area'''
         FOOD = 'Food Justice'
@@ -25,32 +26,40 @@ class Volunteer(models.Model):
         Education = 'Education'
         Equity = 'Racial Equity'
         Womens = 'Empowerment of women'
-    pref_service= models.CharField(max_length = 100, choices=PrefService.choices)
+    pref_service= models.CharField(max_length = 100, choices=PrefService.choices) # actual field that tracks the preference
     
     def __str__(self):
         '''return a string representation of the Volunteer Class'''
-        return '%s %s %s %s %s %s' % (self.first_name, self.last_name, self.phone, self.email, self.bu_id, self.pref_service)
+        return '%s %s %s' % (self.first_name, self.last_name, self.bu_id)
 
     def completed_events(self):
-        '''return a list of completed service events'''
+        '''return a list of completed service events for one volunteer'''
 
+        #Find all events that the volunteer has signed up for 
         events = ServiceEvent.objects.filter(volunteer=self.pk)
 
-        today = datetime.now(tz=timezone.utc)
+        #Find today's date to sort those events
+        today = datetime.now(tz=timezone.utc) #set the timezone and timedate at this current moment
 
+        #sort completed events by those that either occur today or have been completed on previous days
         com_events = events.filter(service_date__lte=today)
 
+        #return the list of events that have been completed as of today
         return com_events
 
     def incomplete_events(self):
         '''return a list of completed service events'''
 
+        #Find all events that a volunteer has signed up for, past and present
         events = ServiceEvent.objects.filter(volunteer=self.pk)
 
+        #Find today's date to sort those events 
         today = datetime.now(tz=timezone.utc)
 
-        inc_events = events.filter(service_date__gte=today)
+        #sort incomplete events by those that do not occur today or earlier
+        inc_events = events.filter(service_date__gt=today)
 
+        #return the incomplete events 
         return inc_events
 
     def hours_served(self):
@@ -68,9 +77,10 @@ class Volunteer(models.Model):
         #run the accumulator pattern
         for event in events:
             
-            #accumulate
+            #accumulate all hours across event by using the duration field for the event
             hours += event.duration
 
+        # return the cumulative total of hours served
         return hours
 
 class CommunityPartner(models.Model):
@@ -81,7 +91,7 @@ class CommunityPartner(models.Model):
     cp_address = models.TextField(blank=False)
     cp_image = models.ImageField(blank=False)
     cp_mission = models.TextField(blank=False)
-    cp_service_value = models.DecimalField(blank=False, max_digits=4, decimal_places=2)
+
     class ServiceType(models.TextChoices):
         '''Subclass to create the option set for the CP's category '''
         FOOD = 'Food Justice'
@@ -93,76 +103,105 @@ class CommunityPartner(models.Model):
 
     def __str__(self):
         '''return a string representation of the Service Event Class'''
-        return '%s %s Type:%s Value:$%s' % (self.cp_name, self.cp_address, self.cp_type, self.cp_service_value)
+        return '%s' % (self.cp_name)
 
     def events_calendar(self):
         '''Filter by pk to group all future events for a CP'''
 
+        #set the time and date at the moment
         today = datetime.now(tz=timezone.utc)
 
+        #create a queryset of events at a cp that will occur today or right now
         events = ServiceEvent.objects.filter(id=self.pk).filter(service_date__gte=today)
 
+        #return the queryset of events that should not be on the past calendar
         return events
-
     def old_events(self):
-        '''filter by pk to group all old events for a cp'''
+        '''Filter by pk to group all past events for a cp'''
 
+        #set the time and date at the moment
         today = datetime.now(tz=timezone.utc)
 
-        events = ServiceEvent.objects.filter(id=self.pk).filter(service_date__lte=today)
+        #create a queryset of events at a cp that have occured 
+        events = ServiceEvent.objects.filter(id=self.pk).filter(service_date__lt=today)
 
+        #return the queryset of events that should be on the past calendar
+        return events
+
+    def sum_old_events(self):
+        '''find the sum of old events at a CP'''
+
+        #get old events
+        events = self.old_events()
+
+        #find the length of that queryset to count how many old events there were
         total = len(events)
 
+        #return the total amount of old events
         return total
 
     def hours_recieved(self):
-        '''calculate the hours served at a partner'''
+        '''calculate the hours served at a partner across all events'''
 
-        today = datetime.now(tz=timezone.utc)
+        #get the old events
+        oldevents = self.old_events()
 
-        oldevents = ServiceEvent.objects.filter(id=self.pk).filter(service_date__lte=today)
-
+        #create a queryset of volunteers whose service events include the old events above
         volunteers = Volunteer.objects.filter(service_events=self.pk)
 
+        #find the number of volunteers at an event
         volunteer_qty = len(volunteers)
 
+        #set accumulator variable
         hours = 0
 
+        #create a for loop to iterate through all old events
         for event in oldevents:
-
+            
+            #the total hours served at a CP adds up for hour served per volunteer per place
             hours += event.duration * volunteer_qty
 
+        #return the hours served 
         return hours
 
     def monetary_equiv(self):
         '''calculate the monetary value of the total service at a partner'''
 
-        hours = self.hours_recieved()
+        #find all of the completed events at a CP
+        oldevents = self.old_events()
 
-        money = hours * self.cp_service_value
+        #add up the monetary equivalent with a loop
+        #set the accumulator variable
+        dollars = 0
 
-        money_rounded = "%.2f" % (money)
+        #create the for loop
+        for event in oldevents:
+            
+            #iterate
+            dollars += event.event_value()
 
+        #round the money to two decimal places for clean formatting 
+        money_rounded = "%.2f" % (dollars)
+
+        #return the rounded total
         return money_rounded
 
-
-
-        
 class ServiceEvent(models.Model):
     '''Creates a model for Service Events including necessary information'''
 
     #Data attributes of a CSC Service Event
     event_name = models.TextField(blank=False)
-    cp = models.ManyToManyField('CommunityPartner') # relationship
+    cp = models.ManyToManyField('CommunityPartner') 
+    # relationship; many service events can happen at a cp and a cp can have many service events
     event_description = models.TextField(blank=False)
     service_date = models.DateTimeField(blank=False)
     duration = models.DecimalField(blank=False, max_digits= 5, decimal_places = 2)
     capacity = models.IntegerField(blank=False)
-    #volunteers =  models.ManyToManyField('Volunteer', blank=True)
+    service_value = models.DecimalField(blank=False, max_digits=4, decimal_places=2)
 
     def __str__(self):
         '''return a string representation of the Service Event Class'''
-        return '%s %s %s %s' % (self.event_name, self.cp, self.service_date, self.duration)
+        return '%s %s' % (self.event_name, self.service_date)
 
     def attendance(self):
         '''return the number of volunteers that will come to the service event'''
@@ -178,3 +217,18 @@ class ServiceEvent(models.Model):
 
         #return the count
         return volunteer_count
+
+    def event_value(self):
+        '''Calculate the total value of the service at an event'''
+
+        #create a queryset of volunteers whose service events the current one
+        volunteers = Volunteer.objects.filter(service_events=self.pk)
+
+        #set up the accumulator variable
+        dollars = 0 
+
+        for volunteer in volunteers:
+
+            dollars += self.duration * self.service_value
+
+        return dollars

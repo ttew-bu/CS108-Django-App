@@ -9,7 +9,7 @@ from .models import * #import the model definitions
 
 urlpatterns = [
     #this maps the URL to the view 
-    path('', ShowAllCommunityPartnersView.as_view(), name='home'),#will change to homepage
+    path('', ShowAllEventsView.as_view(), name='home'),#will change to homepage
     path('partners', ShowAllCommunityPartnersView.as_view(), name='all_partners'),
     path('volunteers', ShowAllVolunteersView.as_view(), name='all_volunteers'),
     path('partner/<int:pk>', ShowCommunityPartnerPageView.as_view(), name='show_partner'),

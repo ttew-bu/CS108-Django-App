@@ -5,5 +5,23 @@
 {% extends 'csc_database/base.html'%}
 
 {% block content %}
-Test!
+<p>
+Welcome to the CSC Database Homepage!
+You can see an interactive week at a glance using the table below. 
+To check or create information for partners, volunteers, events, or impact reports, use the navigation in the page header. 
+</p>
+<center>
+<table>
+    <th>Event Name</th>
+    <th>Event Date</th>
+    <th>Volunteer Spots Filled</th>
+    {% for event in all_events %}
+    <tr>
+    <td>{{event.event_name}}</td>
+    <td>{{event.service_date}}</td>
+    <td>{{event.attendance}}/{{event.capacity}}</td>
+    </tr>
+{% endfor %}
+</table>
+</center>
 {% endblock %}

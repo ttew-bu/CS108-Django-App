@@ -25,6 +25,12 @@ class ShowAllVolunteersView(ListView):
     template_name = 'csc_database/all_volunteers.html'
     context_object_name = 'all_volunteers'
 
+class ShowAllEventsView(ListView):
+    '''subclass of listview to display all Events'''
+    model = ServiceEvent
+    template_name = 'csc_database/home.html'
+    context_object_name = 'all_events'
+
 class ShowVolunteerPageView(DetailView):
     '''subclass of detailview to show an individual volunteer's information'''
 
