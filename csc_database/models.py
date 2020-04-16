@@ -12,7 +12,7 @@ class Volunteer(models.Model):
     #Data attributes of the CSC Volunteer 
     first_name = models.TextField(blank=False)
     last_name = models.TextField(blank=False)
-    phone = PhoneNumberField(blank=False, max_length=13)
+    phone = PhoneNumberField(blank=False)
     email = models.EmailField(blank=False)
     bu_id = models.CharField(blank=False, max_length=9)
     class_year = models.CharField(blank=False, max_length=4)
