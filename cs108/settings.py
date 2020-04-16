@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'quotes',
     'mini_fb', # new app
     'csc_database', #final project
+    'phonenumber_field', #additional app for project
 ]
 
 MIDDLEWARE = [

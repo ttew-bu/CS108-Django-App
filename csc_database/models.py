@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import *
 from datetime import *
+from phonenumber_field.modelfields import *
+
 # Create your models here.
 
 
@@ -10,7 +12,7 @@ class Volunteer(models.Model):
     #Data attributes of the CSC Volunteer 
     first_name = models.TextField(blank=False)
     last_name = models.TextField(blank=False)
-    phone = models.CharField(blank=False, max_length=11)
+    phone = PhoneNumberField(blank=False, max_length=13)
     email = models.EmailField(blank=False)
     bu_id = models.CharField(blank=False, max_length=9)
     class_year = models.CharField(blank=False, max_length=4)
@@ -112,6 +114,39 @@ class CommunityPartner(models.Model):
         total = len(events)
 
         return total
+
+    def hours_recieved(self):
+        '''calculate the hours served at a partner'''
+
+        today = datetime.now(tz=timezone.utc)
+
+        oldevents = ServiceEvent.objects.filter(id=self.pk).filter(service_date__lte=today)
+
+        volunteers = Volunteer.objects.filter(service_events=self.pk)
+
+        volunteer_qty = len(volunteers)
+
+        hours = 0
+
+        for event in oldevents:
+
+            hours += event.duration * volunteer_qty
+
+        return hours
+
+    def monetary_equiv(self):
+        '''calculate the monetary value of the total service at a partner'''
+
+        hours = self.hours_recieved()
+
+        money = hours * self.cp_service_value
+
+        money_rounded = "%.2f" % (money)
+
+        return money_rounded
+
+
+
         
 class ServiceEvent(models.Model):
     '''Creates a model for Service Events including necessary information'''

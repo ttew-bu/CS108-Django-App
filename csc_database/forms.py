@@ -5,6 +5,7 @@
 
 from django import forms
 from .models import *
+from phonenumber_field.formfields import *
 
 service_categories = [
     ('Food Justice', 'Food Justice'),
@@ -18,7 +19,7 @@ class CreateVolunteerForm(forms.ModelForm):
     '''A form to add volunteers to the database'''
     first_name = forms.CharField(label="First Name", required=True)
     last_name = forms.CharField(label="Last Name", required=True)
-    phone = forms.CharField(label="Phone Number", required=True, max_length=11)
+    phone = PhoneNumberField(label="Phone Number", required=True, max_length=13, min_length=11)
     email = forms.EmailField(label="Email Address", required=True)
     bu_id = forms.CharField(label="BU ID Number", required=True, max_length=9)
     class_year = forms.IntegerField(label="Class Year", required=True, min_value=2018, max_value=2100)
