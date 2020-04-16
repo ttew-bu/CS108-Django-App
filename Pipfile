@@ -8,7 +8,6 @@ verify_ssl = true
 [packages]
 django = "*"
 gunicorn = "*"
-django-phonenumber_field = "*"
 
 [requires]
 python_version = "3.8"
