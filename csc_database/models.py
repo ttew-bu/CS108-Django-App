@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import *
-from phonenumber_field.modelfields import *
 from datetime import *
 # Create your models here.
 
