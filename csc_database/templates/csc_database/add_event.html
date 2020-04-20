@@ -1,9 +1,9 @@
-<!--add_volunteer.html
+<!--add_event.html
 tristan tew
-this page depicts the add a volunteer page and submits 
+this page depicts the add a event page and submits 
 user inputs to the server-->
 <head>
-    <title>Add New Volunteer</title>
+    <title>Add New Service Event</title>
 </head>
 
 {% extends 'csc_database/base.html' %}
@@ -11,7 +11,7 @@ user inputs to the server-->
 {% block content %}
 
 {% if user.is_authenticated %}
-<h2>Add a Volunteer</h2>
+<h2>Add an Event</h2>
 <form method='POST'>
 {% csrf_token %}
 <!--CSRF used to verify posts with the server/prevent SQL injection-->
@@ -25,7 +25,7 @@ user inputs to the server-->
     {% endfor %}
     <tr>
         <td>
-        <input type="submit" value="Add Volunteer" name="Add Volunteer">
+        <input type="submit" value="Add Event" name="Add Event">
         </td>
     </tr>
     </table>

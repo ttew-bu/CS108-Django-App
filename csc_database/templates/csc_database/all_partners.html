@@ -7,8 +7,8 @@ This code creates the all community partners display view-->
 </head>
 
 {% extends 'csc_database/base.html'%}
-
 {% block content %}
+{% if user.is_authenticated %}
 <a href ="{% url 'add_partner' %}">Add New Partner</a>
 <table>
     <tr>
@@ -21,8 +21,13 @@ This code creates the all community partners display view-->
     <td><a href ="{% url 'show_partner' partner.pk %}">{{partner.cp_name}}</a></td>
     <td><center><img src="{{partner.cp_image.url}}" style="max-width: 250;"></center></td>
     <td>{{partner.cp_type}}</td>
+    <td><a href="{% url 'delete_partner' partner_pk=partner.pk %}">Delete Partner</a></td>
     </tr>
 
 {% endfor %}
 </table>
+{% else %}
+Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
+{% endif %}
+
 {% endblock %}

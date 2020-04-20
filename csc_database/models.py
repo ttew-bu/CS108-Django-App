@@ -1,8 +1,13 @@
+#models.py
+#Tristan Tew (ttew@bu.edu)
+#This file houses the three models for my CS108 final project database: Volunteers
+#Community Partners, and Service Events will several methods in each to display data
+#effectively on the HTML pages of this Django project. 
 from django.db import models
 from django.urls import *
 from datetime import *
 from phonenumber_field.modelfields import * #custom field I found online to create a data type just for phone numbers
-
+import random
 # Create your models here.
 
 class Volunteer(models.Model):
@@ -27,10 +32,22 @@ class Volunteer(models.Model):
         Equity = 'Racial Equity'
         Womens = 'Empowerment of women'
     pref_service= models.CharField(max_length = 100, choices=PrefService.choices) # actual field that tracks the preference
-    
+
     def __str__(self):
         '''return a string representation of the Volunteer Class'''
         return '%s %s %s' % (self.first_name, self.last_name, self.bu_id)
+
+    def get_absolute_url(self):
+        '''Return a URL to display this volunteer object'''
+
+        return reverse("show_volunteer", kwargs={"pk": self.pk})
+
+    def eventlist(self):
+        '''List of events for a volunteer to be added to'''
+
+        list_ev = ServiceEvent.objects.all().order_by("service_date")
+
+        return list_ev
 
     def completed_events(self):
         '''return a list of completed service events for one volunteer'''
@@ -105,6 +122,18 @@ class CommunityPartner(models.Model):
         '''return a string representation of the Service Event Class'''
         return '%s' % (self.cp_name)
 
+    def get_absolute_url(self):
+        '''Return a URL to display this service event object'''
+
+        return reverse("show_partner", kwargs={"pk": self.pk})
+
+    def find_volunteers(self):
+        '''Return a list of volunteers whose service area matches the CP'''
+
+        volunteers = Volunteer.objects.filter(pref_service=self.cp_type)
+
+        return volunteers
+
     def events_calendar(self):
         '''Filter by pk to group all future events for a CP'''
 
@@ -112,10 +141,11 @@ class CommunityPartner(models.Model):
         today = datetime.now(tz=timezone.utc)
 
         #create a queryset of events at a cp that will occur today or right now
-        events = ServiceEvent.objects.filter(id=self.pk).filter(service_date__gte=today)
+        events = ServiceEvent.objects.filter(cp=self.pk).filter(service_date__gte=today)
 
         #return the queryset of events that should not be on the past calendar
         return events
+
     def old_events(self):
         '''Filter by pk to group all past events for a cp'''
 
@@ -123,7 +153,7 @@ class CommunityPartner(models.Model):
         today = datetime.now(tz=timezone.utc)
 
         #create a queryset of events at a cp that have occured 
-        events = ServiceEvent.objects.filter(id=self.pk).filter(service_date__lt=today)
+        events = ServiceEvent.objects.filter(cp=self.pk).filter(service_date__lt=today)
 
         #return the queryset of events that should be on the past calendar
         return events
@@ -147,7 +177,7 @@ class CommunityPartner(models.Model):
         oldevents = self.old_events()
 
         #create a queryset of volunteers whose service events include the old events above
-        volunteers = Volunteer.objects.filter(service_events=self.pk)
+        volunteers = Volunteer.objects.filter(service_events__in=oldevents)
 
         #find the number of volunteers at an event
         volunteer_qty = len(volunteers)
@@ -191,7 +221,7 @@ class ServiceEvent(models.Model):
 
     #Data attributes of a CSC Service Event
     event_name = models.TextField(blank=False)
-    cp = models.ManyToManyField('CommunityPartner') 
+    cp = models.ForeignKey('CommunityPartner', on_delete=models.CASCADE, blank=False) 
     # relationship; many service events can happen at a cp and a cp can have many service events
     event_description = models.TextField(blank=False)
     service_date = models.DateTimeField(blank=False)
@@ -202,6 +232,26 @@ class ServiceEvent(models.Model):
     def __str__(self):
         '''return a string representation of the Service Event Class'''
         return '%s %s' % (self.event_name, self.service_date)
+    
+    def get_absolute_url(self):
+        '''Return a URL to display this service event object'''
+
+        return reverse("show_event", kwargs={"pk": self.pk})
+
+    def all_vols(self):
+        '''Return a list of vols to add from'''
+
+        vols = Volunteer.objects.exclude(service_events=self.pk)
+
+        return vols
+
+    def volunteer_list(self):
+        '''Return the list of vols to display on the event page'''
+
+        #return a list of vols that have this service event attached to them
+        vols = Volunteer.objects.filter(service_events=self.pk)
+
+        return vols
 
     def attendance(self):
         '''return the number of volunteers that will come to the service event'''
@@ -232,3 +282,4 @@ class ServiceEvent(models.Model):
             dollars += self.duration * self.service_value
 
         return dollars
+

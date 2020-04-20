@@ -9,6 +9,8 @@ Displays all volunteers in the CSC-->
 {% extends 'csc_database/base.html'%}
 
 {% block content %}
+
+{% if user.is_authenticated %}
 <a href ="{% url 'add_volunteer' %}">Add New Volunteer</a>
 <table>
     <colgroup>
@@ -32,8 +34,13 @@ Displays all volunteers in the CSC-->
         <td>{{volunteer.bu_id}}</td>
         <td>{{volunteer.class_year}}</td>
         <td>{{volunteer.pref_service}}</td>
+        <td><a href="{% url 'delete_volunteer' volunteer_pk=volunteer.pk %}">Delete Volunteer</a></td>
         </center>
     </tr>
-{% endfor %}
+    {% endfor %}
 </table>
+{% else %}
+Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
+{% endif %}
+
 {% endblock %}

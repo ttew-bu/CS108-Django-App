@@ -6,16 +6,17 @@ a community partner-->
 <head>
     <Title> {{partner.cp_name}}'s Partner Page</Title>
 </head>
-
 {% block content %}
+{% if user.is_authenticated %}
 <h1>{{partner.cp_name}}</h1>
-<img src="{{partner.cp_image.url}}" style="max-width: 250;">
+<img src="{{partner.cp_image.url}}" style="max-width: 350;">
 <br>
 <h3>{{partner.cp_address}}</h3>
 <br>
+<a href="{% url 'update_partner' partner.pk %}">Edit {{partner.cp_name}}'s Information</a>
+<h3>Mission</h3>
 {{partner.cp_mission}}
 <br>
-
 <h2>Upcoming Volunteer Opportunities at {{partner.cp_name}}</h2>
 <table>
     <colgroup>
@@ -37,7 +38,7 @@ a community partner-->
         {% for event in partner.events_calendar %}
         <center>
         <tr>
-            <td>{{event.event_name}}</td>
+            <td><a href = "{% url 'show_event' event.pk %}">{{event.event_name}}</a></td>
             <td>{{event.service_date}}</td>
             <td>{{event.duration}}</td>
             <td>{{event.attendance}}/{{event.capacity}}</td>
@@ -46,13 +47,24 @@ a community partner-->
         {% endfor %}
     {% else %}
     There are no events coming up at {{partner.cp_name}}, 
-    would like you like to create one here?
+    would like you like to create <a href = "{% url 'add_event' %}">one here?</a>
     {% endif %}
 </table>
 <br>
-
+<h2>Recommended Volunteers</h2>
+{% if partner.find_volunteers %}
+        {% for volunteer in partner.find_volunteers %} 
+        <tr>
+            <td><a href="{% url 'show_volunteer' volunteer.pk %}"> {{volunteer.first_name}} {{volunteer.last_name}}</a></td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+</table>
 <h2>BU Student Service Impact</h2>
 Boston University students have completed {{partner.sum_old_events}} events at {{partner.cp_name}} for a total of {{partner.hours_recieved}} hours. 
 The total financial equivalent of this volunteer service is ${{partner.monetary_equiv}}. 
 <br>
+{% else %}
+Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
+{% endif %}
 {% endblock %}

@@ -1,0 +1,20 @@
+<!--/registration/login.html
+Tristan Tew (ttew@bu.edu)
+This login page is used to make access to the 
+CSC database secure-->
+<p style="font-family:'Lucida Sans'; font-size: xx-large;">
+<center>
+<h1>CSC Database Authorized User Login</h1>
+<hr>
+<br>
+<img src="https://www.bu.edu/csc/files/titlebar.gif" style="max-width: max-content;">
+<br>
+<br>
+<br>
+<form method="post", style="font-family:'Lucida Sans' ; font-size: xx-large;">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button style="font-family: 'Lucida Sans'; font-size: xx-large;",value="submit">Sign in</button>
+</form>
+</center>
+</p>

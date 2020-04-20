@@ -1,0 +1,31 @@
+
+{% extends 'csc_database/base.html' %}
+<head>
+    <Title> Delete {{volunteer.first_name}} {{volunteer.last_name}}</Title>
+</head>
+
+{% block content %}
+{% if user.is_authenticated %}
+
+<p>
+    Are you sure you want to delete {{volunteer.first_name}} {{volunteer.last_name}}'s information?
+<table>
+    <td>
+        <form method='POST'>
+            {% csrf_token %}
+            <input type = 'submit' value='Delete'>
+        </form>
+    </td>
+    <td>
+        <form method='GET' action = "{% url 'all_partners' %}">
+            {% csrf_token %}
+            <input type = 'submit' value ='Go Back'>
+        </form>
+    </td>
+</table>
+</p>
+{% else %}
+Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
+{% endif %}
+
+{% endblock %}

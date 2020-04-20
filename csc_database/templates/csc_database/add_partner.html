@@ -9,6 +9,8 @@ user inputs to the server-->
 {% extends 'csc_database/base.html' %}
 
 {% block content %}
+
+{% if user.is_authenticated %}
 <form method='POST'>
 {% csrf_token %}
 <!--CSRF used to verify posts with the server/prevent SQL injection-->
@@ -22,9 +24,12 @@ user inputs to the server-->
     {% endfor %}
     <tr>
         <td>
-        <input type="submit" name="Add Partner" value="Add Partner">
+        <input type="submit" value="Add Partner" name="Add Partner">
         </td>
     </tr>
     </table>
 </form>
+{% else %}
+Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
+{% endif %}
 {% endblock %}
