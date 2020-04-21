@@ -11,36 +11,36 @@ Displays all volunteers in the CSC-->
 {% block content %}
 
 {% if user.is_authenticated %}
-<a href ="{% url 'add_volunteer' %}">Add New Volunteer</a>
+<body>
+<center>
+<p>
 <table>
     <colgroup>
-        <col span='1' style="width: 32%">
-        <col span='1' style="width: 23%">
-        <col span='1' style="width: 23%">
-        <col span='1' style="width: 22%">
+        <col span='5' style="width: 20%">
     </colgroup>
-    <tr>
-        <center>
+    <tr style="font-size: x-large; font-variant-caps: petite-caps;">
         <th>Name</th>
         <th>BU ID</th>
         <th>Class Year</th>
         <th>Area of Interest</th>
-        </center>
+        <th style="font-style: italic;"><a style="all:unset" href ="{% url 'add_volunteer' %}">Add New Volunteer</a></button>
+        </th>
     </tr>
     {% for volunteer in all_volunteers %}
-    <tr>
-        <center>
-        <td><a href ="{% url 'show_volunteer' volunteer.pk %}">{{volunteer.first_name}} {{volunteer.last_name}}</a></td>
-        <td>{{volunteer.bu_id}}</td>
-        <td>{{volunteer.class_year}}</td>
-        <td>{{volunteer.pref_service}}</td>
-        <td><a href="{% url 'delete_volunteer' volunteer_pk=volunteer.pk %}">Delete Volunteer</a></td>
-        </center>
+    <tr style="font-size: x-large;text-align: center;">
+        <td style="font-style: italic;">
+            <a style="all:unset" href ="{% url 'show_volunteer' volunteer.pk %}">{{volunteer.first_name}} {{volunteer.last_name}}</a></td>
+        <td style="color: rgb(39, 39, 39);">{{volunteer.bu_id}}</td>
+        <td style="color: rgb(39, 39, 39);">{{volunteer.class_year}}</td>
+        <td style="color: rgb(39, 39, 39);">{{volunteer.pref_service}}</td>
+        <td style="color: rgb(204, 0, 0);"><a style="all:unset" href="{% url 'delete_volunteer' volunteer_pk=volunteer.pk %}">Delete Volunteer</a></td>
     </tr>
     {% endfor %}
 </table>
+</center>
 {% else %}
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
-
+</p>
+</body>
 {% endblock %}

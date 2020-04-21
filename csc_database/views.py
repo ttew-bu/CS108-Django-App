@@ -12,6 +12,7 @@ class ShowAllCommunityPartnersView(ListView):
     model = CommunityPartner
     template_name= 'csc_database/all_partners.html'
     context_object_name = 'all_partners'
+    queryset = CommunityPartner.objects.all().order_by('cp_name')
 
 class ShowCommunityPartnerPageView(DetailView):
     '''subclass of detailview for info on one cp'''
@@ -24,6 +25,7 @@ class ShowAllVolunteersView(ListView):
     model = Volunteer
     template_name = 'csc_database/all_volunteers.html'
     context_object_name = 'all_volunteers'
+    queryset=Volunteer.objects.all().order_by('bu_id')
 
 class ShowVolunteerPageView(DetailView):
     '''subclass of detailview to show an individual volunteer's information'''
@@ -48,6 +50,18 @@ class CreateVolunteerView(CreateView):
     '''subclass of createview to add a volunteer'''
     form_class =CreateVolunteerForm
     template_name ='csc_database/add_volunteer.html'
+
+    def form_valid(self, form):
+    
+        print(form.cleaned_data)
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+
+        print(form.errors)
+
+        return super().form_invalid(form)
 
 class UpdateVolunteerView(UpdateView):
     '''subclass of updateview to update a volunteer'''
@@ -86,6 +100,19 @@ class CreatePartnerView(CreateView):
     form_class =CreatePartnerForm
     template_name='csc_database/add_partner.html'''
 
+
+    def form_valid(self, form):
+
+        print(form.cleaned_data)
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+
+        print(form.errors)
+
+        return super().form_invalid(form)
+
 class UpdatePartnerView(UpdateView):
     '''subclass of updateview to update a volunteer'''
     form_class=UpdatePartnerForm
@@ -122,6 +149,18 @@ class CreateEventView(CreateView):
     '''subclass of createview to add an event'''
     form_class =CreateEventForm
     template_name='csc_database/add_event.html'
+
+    def form_valid(self, form):
+    
+        print(form.cleaned_data)
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+
+        print(form.errors)
+
+        return super().form_invalid(form)
 
 class UpdateEventView(UpdateView):
     '''subclass of updateview to update a volunteer'''
@@ -163,16 +202,17 @@ class HomePageView(ListView):
     '''subclass of templateview for the home page'''
     template_name = 'csc_database/home.html'
     model = ServiceEvent
+    context_object_name = 'event'
     today = datetime.today()
     next_week = datetime.today() + timedelta(7)
     queryset = ServiceEvent.objects.filter(service_date__gte=today).filter(service_date__lte=next_week).order_by('service_date')
-    context_object_name = 'event'
 
 class AssignVolView(DetailView):
     '''A detail view to assign vols from'''
     model = Volunteer
     template_name="csc_database/assign_vols.html"
     context_object_name = 'volunteer'
+
 
 class AssignEventView(DetailView):
     '''A detail view to assign vols from'''
@@ -182,11 +222,12 @@ class AssignEventView(DetailView):
 
 def add_volunteer(request, volunteer_pk, event_pk):
     '''add volunteer to an event with the click of a button'''
-
+    print("volunteerpk=%s eventpk=%s" % (volunteer_pk, event_pk))
+    
     volunteer = Volunteer.objects.get(pk=volunteer_pk)
-
+    
     event = ServiceEvent.objects.get(pk=event_pk)
-
+    print("adding %s to %s" % (volunteer, event))
     volunteer.service_events.add(event)
 
     volunteer.save()
@@ -195,13 +236,15 @@ def add_volunteer(request, volunteer_pk, event_pk):
 
     return url
 
-def remove_volunteer(request, event_pk, volunteer_pk):
+def remove_volunteer(request, volunteer_pk, event_pk):
     '''remove a volunteer from an event with the click of a button'''
 
     volunteer = Volunteer.objects.get(pk=volunteer_pk)
 
     event = ServiceEvent.objects.get(pk=event_pk)
 
+    print("removing %s from %s" % (volunteer, event))
+    
     volunteer.service_events.remove(event)
 
     volunteer.save()

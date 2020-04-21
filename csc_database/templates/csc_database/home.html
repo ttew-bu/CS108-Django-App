@@ -7,32 +7,34 @@
 {% block content %}
 {% if user.is_authenticated %}
 <p>
-Welcome to the CSC Database Homepage!
-You can see an interactive week at a glance using the table below. 
-To check or create information for partners, volunteers, events, or impact reports, use the navigation in the page header. 
-</p>
 <center>
+<h2>Welcome to the CSC Database Homepage!</h2>
+<br>
+You can see an interactive week at a glance using the table below. 
+<br>
+To check or create information for partners, volunteers, or events, use the navigation in the page header. 
+</p>
 <h2>This Week's Events</h2>
 {% if event %}
-{% for event in event %}
 <table>
     <th>Event Name</th>
     <th>Event Date</th>
     <th>Volunteer Spots Filled</th>
+    
+    {% for event in event %}
     <tr>
-    <td><a href="{% url 'show_event' event.pk %}">{{event.event_name}}</a></td>
-    <td>{{event.service_date}}</td>
-    <td>{{event.attendance}}/{{event.capacity}}</td>
+        <td><a href="{% url 'show_event' event.pk %}">{{event.event_name}}</a></td>
+        <td>{{event.service_date}}</td>
+        <td>{{event.attendance}}/{{event.capacity}}</td>
     </tr>
+    {% endfor %}
 </table>
-{% endfor %}
 {% else %}
 There are no events this week, would you like to <a href = "{% url 'add_event' %}">add one?</a>
 {% endif %}
-<h2>Impact Report to Date</h2>
-<p>Boston University Students have completed X service events for a total of Y hours.
 <br>
-The estimated financial equivalent of this service is $Z. </p>
+<h2>Community Partner Feature</h2>
+Insert Link to CP with the closest service date
 </center>
 {% else %}
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 

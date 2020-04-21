@@ -12,8 +12,9 @@ user inputs to the server-->
 
 {% if user.is_authenticated %}
 <h2>Update a Partner</h2>
-<form method='POST'>
+<form method='POST' enctype="multipart/form-data">
 {% csrf_token %}
+{{form.errors}}
 <!--CSRF used to verify posts with the server/prevent SQL injection-->
     <table>
     {% for field in form %}

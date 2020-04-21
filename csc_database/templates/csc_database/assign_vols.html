@@ -20,7 +20,7 @@
     <td><a href ="{% url 'show_partner' event.cp.pk %}">{{event.cp.cp_name}}</a></td>
     <td><form method='GET' action= "{% url 'add_to_event' volunteer_pk=volunteer.pk event_pk=event.pk %}"> <!--url only loads when a value is hard-coded in; homepage works fine -->
         {% csrf_token %}
-        <input type='submit' name='Add to Event' value='Add to Event'></td>
+        <input type='submit' name='Add to Event' value='Add to Event'></form></td>
     </tr>
 {% endfor %}
 </table>

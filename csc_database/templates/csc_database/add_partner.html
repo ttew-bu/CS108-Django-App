@@ -11,7 +11,8 @@ user inputs to the server-->
 {% block content %}
 
 {% if user.is_authenticated %}
-<form method='POST'>
+<h2>Add a Community Partner</h2>
+<form method='POST' enctype="multipart/form-data">
 {% csrf_token %}
 <!--CSRF used to verify posts with the server/prevent SQL injection-->
     <table>

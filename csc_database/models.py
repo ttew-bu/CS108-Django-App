@@ -45,7 +45,7 @@ class Volunteer(models.Model):
     def eventlist(self):
         '''List of events for a volunteer to be added to'''
 
-        list_ev = ServiceEvent.objects.all().order_by("service_date")
+        list_ev = ServiceEvent.objects.all()
 
         return list_ev
 
@@ -106,7 +106,7 @@ class CommunityPartner(models.Model):
     #Data attributes of the CSC Community Partners
     cp_name = models.TextField(blank=False)
     cp_address = models.TextField(blank=False)
-    cp_image = models.ImageField(blank=False)
+    cp_image = models.ImageField(blank=True)
     cp_mission = models.TextField(blank=False)
 
     class ServiceType(models.TextChoices):
@@ -115,8 +115,8 @@ class CommunityPartner(models.Model):
         LGBTQ = 'LGBTQ'
         Education = 'Education'
         Equity = 'Racial Equity'
-        Gender = 'Gender Equity'
-    cp_type= models.CharField(max_length=100, choices=ServiceType.choices)
+        Womens = 'Empowerment of women'
+    cp_type= models.CharField(max_length=100, choices=ServiceType.choices, blank=False)
 
     def __str__(self):
         '''return a string representation of the Service Event Class'''
@@ -238,9 +238,11 @@ class ServiceEvent(models.Model):
 
         return reverse("show_event", kwargs={"pk": self.pk})
 
+    #this is the function used on the assign page 
     def all_vols(self):
         '''Return a list of vols to add from'''
 
+        #excludes volunteers that are already signed up for the event
         vols = Volunteer.objects.exclude(service_events=self.pk)
 
         return vols

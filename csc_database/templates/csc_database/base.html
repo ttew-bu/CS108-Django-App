@@ -3,17 +3,20 @@ Tristan Tew (ttew@bu.edu
 This code creates the top and bottom banner for 
 the CSC database-->
 
-<html>
+<html style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
     <body>
     <!--navigation links-->
     <header>
         <table>
-            <tr>
-                <td><a href = "{% url 'home' %}"><img src="https://www.bu.edu/csc/files/titlebar.gif"></a></td>
-                <td><a href = "{% url 'logout' %}">Sign out</a></td>
-                <td><a href = "{% url 'all_partners' %}">Partner Database</a></td>
-                <td><a href = "{% url 'all_volunteers' %}">Volunteer Database</a></td>
-                <td><a href = "{% url 'all_events' %}">Event Database</a></td>
+            <colgroup>
+                <col span="1" width="15%">
+            </colgroup>
+            <tr style="font-size: 20px;">
+                <td><a style="all:unset" href="{% url 'home' %}"><img src="https://www.bu.edu/csc/files/titlebar.gif"></a></td>
+                <td><a style="all:unset" href = "{% url 'logout' %}">Sign out</a></td>
+                <td><a style="all:unset" href = "{% url 'all_partners' %}">Partner Database</a></td>
+                <td><a style="all:unset" href = "{% url 'all_volunteers' %}">Volunteer Database</a></td>
+                <td><a style="all:unset" href = "{% url 'all_events' %}">Event Database</a></td>
             </tr>
         </table>
     </header>
@@ -25,10 +28,13 @@ the CSC database-->
     {% endblock %}
 
     <hr>
+    <p>
+    <center>
     This database has been created for limited use within 
     CS108 and for distribution across Boston University. 
     <br>
     Not all community partner information is accurate and no real volunteer 
     information was used in the creation of this demo. 
-    
+    </center>
+    </p>
 </html>

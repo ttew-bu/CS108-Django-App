@@ -9,25 +9,31 @@ This code creates the all community partners display view-->
 {% extends 'csc_database/base.html'%}
 {% block content %}
 {% if user.is_authenticated %}
-<a href ="{% url 'add_partner' %}">Add New Partner</a>
+<center>
 <table>
-    <tr>
+    <colgroup>
+        <col span='4' style="width: 25%">
+    </colgroup>
+    <tr style="font-size: 32px; font-variant-caps: petite-caps;">
         <th>Name</th>
         <th>Logo</th>
         <th>Focus Area</th>
+        <th style="font-style: italic;"><a style="all:unset" href ="{% url 'add_partner' %}">Add New Partner</a></th>
     </tr>
     {% for partner in all_partners %}
+    <center>
     <tr>
-    <td><a href ="{% url 'show_partner' partner.pk %}">{{partner.cp_name}}</a></td>
-    <td><center><img src="{{partner.cp_image.url}}" style="max-width: 250;"></center></td>
-    <td>{{partner.cp_type}}</td>
-    <td><a href="{% url 'delete_partner' partner_pk=partner.pk %}">Delete Partner</a></td>
+    <td style="font-size: 24; font-style: italic;"><a style="all:unset" href ="{% url 'show_partner' partner.pk %}">{{partner.cp_name}}</a></td>
+    <td><img src="{{partner.cp_image.url}}" style="max-width: 250;"></td>
+    <td style="font-size: 24;">{{partner.cp_type}}</td>
+    <td style="font-size: 24; color: rgb(204,0,0);"><a style="all:unset" href="{% url 'delete_partner' partner_pk=partner.pk %}">Delete Partner</a></td>
     </tr>
-
+</center>
 {% endfor %}
 </table>
+</center>
 {% else %}
-Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
+Please <a style="all:unset" href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 
 {% endblock %}
