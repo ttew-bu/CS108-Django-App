@@ -2,11 +2,11 @@
 Tristan Tew (ttew@bu.edu
 This code creates the top and bottom banner for 
 the CSC database-->
-
-<html style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
-    <body>
+<head>
+    <link rel="stylesheet" href="http://cs-people.bu.edu/ttew/assets/css/main.css">
+</head>
+<html style="margin: 5px 1%;">
     <!--navigation links-->
-    <header>
         <table>
             <colgroup>
                 <col span="1" width="15%">
@@ -19,9 +19,6 @@ the CSC database-->
                 <td><a style="all:unset" href = "{% url 'all_events' %}">Event Database</a></td>
             </tr>
         </table>
-    </header>
-    <hr>
-
     <!-- this content block will be filled in by another template
     which extends this base.html page. -->
     {% block content %}

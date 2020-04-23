@@ -130,7 +130,9 @@ class CommunityPartner(models.Model):
     def past_volunteers(self):
         '''Return a list of volunteers who've served here before'''
 
-        volunteers = Volunteer.objects.filter(service_events__in=self.old_events)
+        events = self.old_events()
+
+        volunteers = Volunteer.objects.filter(service_events__in=events)
 
         return volunteers
 
@@ -176,12 +178,6 @@ class CommunityPartner(models.Model):
         #get the old events
         oldevents = self.old_events()
 
-        #create a queryset of volunteers whose service events include the old events above
-        volunteers = Volunteer.objects.filter(service_events__in=oldevents)
-
-        #find the number of volunteers at an event
-        volunteer_qty = len(volunteers)
-
         #set accumulator variable
         hours = 0
 
@@ -189,7 +185,7 @@ class CommunityPartner(models.Model):
         for event in oldevents:
             
             #the total hours served at a CP adds up for hour served per volunteer per place
-            hours += event.duration * volunteer_qty
+            hours += event.duration * event.event_vol_count()
 
         #return the hours served 
         return hours
@@ -313,3 +309,11 @@ class ServiceEvent(models.Model):
 
         return dollars
 
+    def event_vol_count(self):
+        '''calculate the total vols per event'''
+
+        vols = Volunteer.objects.filter(service_events=self.pk)
+
+        num_vols = len(vols)
+
+        return num_vols

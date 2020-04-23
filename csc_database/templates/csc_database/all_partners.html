@@ -23,7 +23,7 @@ This code creates the all community partners display view-->
     {% for partner in all_partners %}
     <center>
     <tr>
-    <td style="font-size: 24; font-style: italic;"><a style="all:unset" href ="{% url 'show_partner' partner.pk %}">{{partner.cp_name}}</a></td>
+    <td style="font-size: 24; font-style: italic;"><a href ="{% url 'show_partner' partner.pk %}">{{partner.cp_name}}</a></td>
     <td><img src="{{partner.cp_image.url}}" style="max-width: 250;"></td>
     <td style="font-size: 24;">{{partner.cp_type}}</td>
     <td style="font-size: 24; color: rgb(204,0,0);"><a style="all:unset" href="{% url 'delete_partner' partner_pk=partner.pk %}">Delete Partner</a></td>

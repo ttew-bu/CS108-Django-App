@@ -253,3 +253,20 @@ def remove_volunteer(request, volunteer_pk, event_pk):
     url = redirect(reverse('show_event', kwargs={'pk':event_pk}))
 
     return url 
+
+def remove_volunteer_return_vol(request, volunteer_pk, event_pk):
+    '''remove a volunteer from an event with the click of a button'''
+
+    volunteer = Volunteer.objects.get(pk=volunteer_pk)
+
+    event = ServiceEvent.objects.get(pk=event_pk)
+
+    print("removing %s from %s" % (volunteer, event))
+    
+    volunteer.service_events.remove(event)
+
+    volunteer.save()
+
+    url = redirect(reverse('show_volunteer', kwargs={'pk':volunteer_pk}))
+
+    return url 

@@ -2,7 +2,10 @@
 Tristan Tew (ttew@bu.edu)
 This login page is used to make access to the 
 CSC database secure-->
-<p style="font-family:'Lucida Sans'; font-size: xx-large;">
+<head>
+    <link rel="stylesheet" href="http://cs-people.bu.edu/ttew/assets/css/main.css">
+</head>
+<div style="margin: 50px 40%;">
 <center>
 <h1>CSC Database Authorized User Login</h1>
 <hr>
@@ -11,10 +14,10 @@ CSC database secure-->
 <br>
 <br>
 <br>
-<form method="post", style="font-family:'Lucida Sans' ; font-size: xx-large;">
+<form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button style="font-family: 'Lucida Sans'; font-size: xx-large;",value="submit">Sign in</button>
+    <button style="font-family: 'Lucida Sans'; font-size: x-large;",value="submit">Sign in</button>
 </form>
 </center>
-</p>
+</div>

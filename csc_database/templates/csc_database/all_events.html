@@ -19,14 +19,14 @@ List all events on the current calendar and allow for CP and event navigation-->
         <th>Event Date</th>
         <th>Event Duration</th>
         <th>Community partner</th>
-        <th><a style="all:unset; font-style: italic;" href ="{% url 'add_event' %}">Add New Event</a></th>
+        <th><button><a style="all:unset" style="font-style: italic;" href ="{% url 'add_event' %}">Add New Event</a></button></th>
     </tr>
     {% for event in all_events %}
     <tr style="font-size: large;">
-    <td style="font-style: italic;"><a style="all:unset" href="{% url 'show_event' event.pk %}">{{event.event_name}}</a></td>
+    <td style="font-style: italic;"><a href="{% url 'show_event' event.pk %}">{{event.event_name}}</a></td>
     <td>{{event.service_date}}</td>
     <td>{{event.duration}}</td>
-    <td style="font-style: italic;"><a style="all:unset" href ="{% url 'show_partner' event.cp.pk %}">{{event.cp.cp_name}}</a></td>
+    <td style="font-style: italic;"><a href ="{% url 'show_partner' event.cp.pk %}">{{event.cp.cp_name}}</a></td>
     <td style="color: rgb(204, 0, 0);"><a style="all:unset" href="{% url 'delete_event' event_pk=event.pk %}"> Delete Event</a></td>
     </tr>
 {% endfor %}
@@ -34,6 +34,6 @@ List all events on the current calendar and allow for CP and event navigation-->
 </center>
 </p>
 {% else %}
-Please <a style="all:unset; color:rgb(204, 0, 0)" href = "{% url 'login' %}">log in</a> to the database to view this page. 
+Please <a style="color:rgb(204, 0, 0)" href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 {% endblock %}

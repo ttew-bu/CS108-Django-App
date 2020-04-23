@@ -29,6 +29,7 @@ urlpatterns = [
     path('event/<int:pk>/assign', AssignEventView.as_view(),name='assign_event'),#pulls up page to assign vols
     path('volunteer/<int:volunteer_pk>/add_to_event/<int:event_pk>', add_volunteer, name='add_to_event'),#allows us to add vols to events; doesn't use .as_view to use a function on the views page
     path('volunteer/<int:volunteer_pk>/remove_from_event/<int:event_pk>', remove_volunteer, name='remove_from_event'),#allows us to remove vols from events;doesn't use .as_view to use a function on the views page
+    path('volunteer/<int:volunteer_pk>/remove_return_vol/<int:event_pk>', remove_volunteer_return_vol, name='remove_vol_from_event'),#same as function above, but with different redirect url
     path('partner/<int:partner_pk>/delete', DeletePartnerView.as_view(), name="delete_partner"), #delete partner url
     path('volunteer/<int:volunteer_pk>/delete', DeleteVolunteerView.as_view(), name="delete_volunteer"), #Delete volunteer url
     path('event/<int:event_pk>/delete', DeleteEventView.as_view(), name="delete_event"), #delete event url

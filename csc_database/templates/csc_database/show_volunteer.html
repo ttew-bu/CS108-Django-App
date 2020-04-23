@@ -5,7 +5,6 @@
 
 {% block content %}
 <h1>{{volunteer.first_name}} {{volunteer.last_name}}'s Volunteer History</h1>
-<button><a style="all:unset" href="{% url 'update_volunteer' volunteer.pk %}">Edit {{volunteer.first_name}}'s Information</a></button>
 <br>
 <table>
     <tr>
@@ -38,18 +37,22 @@
             <td>Service Focus Area:</td>
             <td> {{volunteer.pref_service}}</td>
         </tr>
+        <tr><td><button><a style="all:unset" href="{% url 'update_volunteer' volunteer.pk %}">
+            Edit {{volunteer.first_name}}'s Information</a></button></td>
+        <td><button><a style="all:unset" href="{% url 'assign_vol' volunteer.pk %}">
+            Assign {{volunteer.first_name}} to event</a></button></td></tr>
     </table>
     </td>
     <td>
     <h2>Upcoming Service Events</h2>
     <table>
-        <tr><button><a style="all:unset" href="{% url 'assign_vol' volunteer.pk %}">Assign {{volunteer.first_name}} to another event</a></button></tr>
         {% if volunteer.incomplete_events %}
         <tr>
             <center>
             <th>Opportunity Name</th>
             <th>Date and Time</th>
             <th>Hours</th>
+            <th> </th>
             </center>
         </tr>
         {% for event in volunteer.incomplete_events %}
@@ -58,6 +61,9 @@
             <td><a href = "{% url 'show_event' event.pk %}">{{event.event_name}}</a></td>
             <td>{{event.service_date}}</td>
             <td>{{event.duration}}</td>
+            <td><form method='GET' action= "{% url 'remove_vol_from_event' volunteer_pk=volunteer.pk event_pk=event.pk %}">
+                {% csrf_token %}
+                <input type='submit' value='Remove'></form></td>
             </td>
         </tr>
         </center>

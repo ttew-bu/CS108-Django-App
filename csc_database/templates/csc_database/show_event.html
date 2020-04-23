@@ -2,23 +2,33 @@
 Tristan Tew (ttew@bu.edu)
 This code creates the individual display page for
 an event-->
-
 {% extends 'csc_database/base.html' %}
 <head>
     <Title> {{event.event_name}}</Title>
 </head>
-
 {% block content %}
 {% if user.is_authenticated %}
-<h2>{{event.event_name}}</h2>
-<a href="{% url 'update_event' event.pk %}">Edit Event Information</a>
+<center>
+<h1>{{event.event_name}}</h1>
+</center>
 <table>
-
-    <tr><td>Date: {{event.service_date}}</td></tr>
-    <tr><td>Start Time: {{event.start_time}}</td></tr>
-    <tr><td>Event Duration: {{event.duration}} hours</td></tr>
-    <tr><td>Volunteer Count: {{event.attendance}}/{{event.capacity}}</td></tr>
+    <td>
+    <table>
+        <center>
+    <h2>Event Information</h2>
+    <tr style="font-size: 26px;"><td>Date:</td><td> {{event.service_date}}</td></tr>
+    <tr style="font-size: 26px;"><td>Start Time:</td><td> {{event.start_time}}</td></tr>
+    <tr style="font-size: 26px;"><td>Event Duration:</td><td> {{event.duration}} hours</td></tr>
+    <tr style="font-size: 26px;"><td>Volunteer Count:</td><td>{{event.attendance}}/{{event.capacity}}</td></tr>
+    <tr style="font-size: 26px;"><td>Community Partner:</td><td><a href="{% url 'show_partner' event.cp.pk%}">{{event.cp.cp_name}}</a></td></tr>
+    <tr>
+<td><button><a style="all:unset" href="{% url 'update_event' event.pk %}">Edit Event Information</a></button></td>
+<td><button><a style="all: unset" href="{% url 'assign_event' event.pk %}">Assign Volunteers from List</a></button></td>
+    </tr>
+</center>
 </table>
+</td>
+<td>
 <h2>Volunteers In Attendance</h2>
 {% if event.volunteer_list %}
 <table>
@@ -37,6 +47,8 @@ an event-->
 <br>
 There are no volunteers signed up for this event, use the "assign" button below to fix that!
 {% endif %}
+</td>
+<td>
 <h2>Recommended Volunteers</h2>
 <table>
     {% for volunteer in event.rec_vols %}
@@ -49,8 +61,7 @@ There are no volunteers signed up for this event, use the "assign" button below 
             <input type='submit' value='Add'></form></td>
     </tr>
     {% endfor %}
-    <tr><td>To assign other volunteers</td>
-        <td><button><a style="all: unset" href="{% url 'assign_event' event.pk %}">click here</a></button></td></tr>
+</table></td>
 </table>
 {% else %}
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
