@@ -51,19 +51,21 @@ a community partner-->
     {% endif %}
 </table>
 <br>
-<h2>Recommended Volunteers</h2>
+<h2>BU Student Service Impact</h2>
+Boston University students have completed {{partner.sum_old_events}} events at {{partner.cp_name}} for a total of {{partner.hours_recieved}} hours. 
+The total financial equivalent of this volunteer service is ${{partner.monetary_equiv}}. 
+<br>
+<h2>Past Volunteers</h2>
 {% if partner.find_volunteers %}
         {% for volunteer in partner.find_volunteers %} 
         <tr>
             <td><a href="{% url 'show_volunteer' volunteer.pk %}"> {{volunteer.first_name}} {{volunteer.last_name}}</a></td>
         </tr>
         {% endfor %}
+    {% else %}
+    No volunteers have served at {{partner.cp_name}} before!
     {% endif %}
 </table>
-<h2>BU Student Service Impact</h2>
-Boston University students have completed {{partner.sum_old_events}} events at {{partner.cp_name}} for a total of {{partner.hours_recieved}} hours. 
-The total financial equivalent of this volunteer service is ${{partner.monetary_equiv}}. 
-<br>
 {% else %}
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}

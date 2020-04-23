@@ -78,6 +78,7 @@ class CreateEventForm(forms.ModelForm):
     event_description = forms.CharField(label="Description", required=True)#basic charfield
     #duration is a decimal because events can be portions of hours; initial value is 2 because most events are a couple hours 
     duration = forms.DecimalField(label="Duration (in hours)", max_digits=4, decimal_places=2, initial=2.00, required=True)
+    start_time=forms.TimeField(label="Start Time", required=True)
     #capacity is an integer because you cannot have half people at events. 
     capacity = forms.IntegerField(label="Capacity", required=True)
     #service value is a decimal field because currenecy needs cents and dollars. 
@@ -86,13 +87,14 @@ class CreateEventForm(forms.ModelForm):
     class Meta:#includes all parts of the model for events
         '''associate with the event model'''
         model = ServiceEvent
-        fields = ['event_name', 'cp', 'event_description', 'service_date', 'duration', 'capacity', 'service_value']
+        fields = ['event_name', 'cp', 'event_description', 'start_time','service_date', 'duration', 'capacity', 'service_value']
     
 class UpdateEventForm(forms.ModelForm):#same as the create event form so as to not exclude anything 
     '''A form to add events to the database'''
     event_name = forms.CharField(label ="Name", required=True)
     event_description = forms.CharField(label="Description", required=True)
-    service_date = forms.DateTimeField(label="Date and Start Time", required=True)
+    service_date = forms.DateField(label="Date and Start Time", required=True)
+    start_time=forms.TimeField(label="Start Time", required=True)
     duration = forms.DecimalField(label="Duration (in hours)", max_digits=4, decimal_places=2, initial=2.00, required=True)
     capacity = forms.IntegerField(label="Capacity", required=True)
     service_value = forms.DecimalField(label="Service Value (in US dollars)", max_digits=5, decimal_places=2, initial=12.00, required=True)
@@ -100,5 +102,5 @@ class UpdateEventForm(forms.ModelForm):#same as the create event form so as to n
     class Meta:
         '''associate with the event model'''
         model = ServiceEvent
-        fields = ['event_name', 'cp', 'event_description', 'service_date', 'duration', 'capacity', 'service_value']
+        fields = ['event_name', 'cp', 'event_description', 'service_date', 'start_time','duration', 'capacity', 'service_value']
     

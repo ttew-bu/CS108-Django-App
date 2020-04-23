@@ -22,6 +22,7 @@ user inputs to the server-->
     <tr>
         <th>{{field.label}}</th>
         <td>{{field}}</td>
+        <td>{{field.errors|striptags}}</td><!--Will give the error, if it exists and tell you how to fix it-->
     </tr>
     {% endfor %}
     <tr>

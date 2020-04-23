@@ -4,6 +4,7 @@ from django.views.generic import *
 from .forms import * 
 from django.shortcuts import *
 from django.urls import *
+from django.utils import *
 
 # Create your views here.
 
@@ -203,8 +204,8 @@ class HomePageView(ListView):
     template_name = 'csc_database/home.html'
     model = ServiceEvent
     context_object_name = 'event'
-    today = datetime.today()
-    next_week = datetime.today() + timedelta(7)
+    today = today = timezone.now()
+    next_week = today + timedelta (7)
     queryset = ServiceEvent.objects.filter(service_date__gte=today).filter(service_date__lte=next_week).order_by('service_date')
 
 class AssignVolView(DetailView):

@@ -14,14 +14,14 @@ an event-->
 <a href="{% url 'update_event' event.pk %}">Edit Event Information</a>
 <table>
 
-    <tr><td>Date and Start Time: {{event.service_date}}</td></tr>
+    <tr><td>Date: {{event.service_date}}</td></tr>
+    <tr><td>Start Time: {{event.start_time}}</td></tr>
     <tr><td>Event Duration: {{event.duration}} hours</td></tr>
     <tr><td>Volunteer Count: {{event.attendance}}/{{event.capacity}}</td></tr>
 </table>
 <h2>Volunteers In Attendance</h2>
 {% if event.volunteer_list %}
 <table>
-    <tr><td><button><a href="{% url 'assign_event' event.pk %}">Assign Volunteers</a></button></td></tr>
     {% for volunteer in event.volunteer_list %}
     <tr>
         <td>
@@ -34,11 +34,24 @@ an event-->
     {% endfor %}
 </table>
 {% else %}
-<button><a style="all: unset" href="{% url 'assign_event' event.pk %}">Assign Volunteers</a></button>
-<br><br>
-There are no volunteers signed up for this event, use the "assign" button to fix that!
+<br>
+There are no volunteers signed up for this event, use the "assign" button below to fix that!
 {% endif %}
-
+<h2>Recommended Volunteers</h2>
+<table>
+    {% for volunteer in event.rec_vols %}
+    <tr>
+        <td>
+            <a style="all: unset" href="{% url 'show_volunteer' volunteer.pk %}">{{volunteer.first_name}} {{volunteer.last_name}}</a>
+        </td>
+        <td><form method='GET' action= "{% url 'add_to_event' volunteer_pk=volunteer.pk event_pk=event.pk %}">
+            {% csrf_token %}
+            <input type='submit' value='Add'></form></td>
+    </tr>
+    {% endfor %}
+    <tr><td>To assign other volunteers</td>
+        <td><button><a style="all: unset" href="{% url 'assign_event' event.pk %}">click here</a></button></td></tr>
+</table>
 {% else %}
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}

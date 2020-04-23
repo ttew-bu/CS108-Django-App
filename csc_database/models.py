@@ -127,10 +127,10 @@ class CommunityPartner(models.Model):
 
         return reverse("show_partner", kwargs={"pk": self.pk})
 
-    def find_volunteers(self):
-        '''Return a list of volunteers whose service area matches the CP'''
+    def past_volunteers(self):
+        '''Return a list of volunteers who've served here before'''
 
-        volunteers = Volunteer.objects.filter(pref_service=self.cp_type)
+        volunteers = Volunteer.objects.filter(service_events__in=self.old_events)
 
         return volunteers
 
@@ -224,7 +224,8 @@ class ServiceEvent(models.Model):
     cp = models.ForeignKey('CommunityPartner', on_delete=models.CASCADE, blank=False) 
     # relationship; many service events can happen at a cp and a cp can have many service events
     event_description = models.TextField(blank=False)
-    service_date = models.DateTimeField(blank=False)
+    service_date = models.DateField(blank=False)#split from datetime field to display cleaner
+    start_time = models.TimeField(blank=False)#split from datetime field to display cleaner
     duration = models.DecimalField(blank=False, max_digits= 5, decimal_places = 2)
     capacity = models.IntegerField(blank=False)
     service_value = models.DecimalField(blank=False, max_digits=4, decimal_places=2)
@@ -237,6 +238,33 @@ class ServiceEvent(models.Model):
         '''Return a URL to display this service event object'''
 
         return reverse("show_event", kwargs={"pk": self.pk})
+
+    #this is the function used on display page
+    def rec_vols(self):
+        '''Return a list of vols to add from'''
+
+        #list of vols not coming to this event, this automatically will exclude those already in attendance from our query
+        vol_attend = self.all_vols()
+
+        #find the past events of the cp
+        cp_ev = self.cp.old_events()
+
+        #list of vols who have served at this cp using the previous list
+        vols_cp = vol_attend.filter(service_events__in=cp_ev)
+
+        #list of vols with matching pref service types 
+        vols_list = vol_attend.filter(pref_service=self.cp.cp_type)
+
+        #combine the lists
+        all_vol = vols_cp|vols_list
+
+        #now make it unique 
+
+        unique_vols = all_vol.distinct()
+
+        #return our unique list of recommendations that are not alreaedy on the event
+        return unique_vols
+
 
     #this is the function used on the assign page 
     def all_vols(self):
