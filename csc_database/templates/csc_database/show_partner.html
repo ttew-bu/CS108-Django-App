@@ -9,23 +9,40 @@ a community partner-->
 {% block content %}
 {% if user.is_authenticated %}
 <center>
-<div>
+<div style="margin: 48px 30%;">
 <h1>{{partner.cp_name}}</h1>
-<br>
-<img src="{{partner.cp_image.url}}" style="max-width: 350;">
-<br>
-<h3>Address: {{partner.cp_address}}</h3>
-<br>
-<h3>Service Area: {{partner.cp_type}}</h3>
-<br>
-<a href="{% url 'update_partner' partner.pk %}">Edit {{partner.cp_name}}'s Information</a>
-<br>
+<table>
+    <table style="font-size: 20px;">
+    <center>
+        <tr><center><img src="{{partner.cp_image.url}}" style="max-width: 350;"></center></tr>
+        <br>
+            <tr><th><center>Address:</center></th><td><center>{{partner.cp_address}}</center></td></tr>
+            <tr><th><center>Service Area:</center></th><td><center>{{partner.cp_type}}</center></td></tr>
+    </center>
+    </table>
+    </td>
+    </tr>
+</table>
+</div>
+<div style="margin: 12px 10%;">
+<table>
+    <tr>
+<td><center><a href="{% url 'update_partner' partner.pk %}"><button>Edit {{partner.cp_name}}'s Information</button></a></center></td>
+<td><center><a href="{% url 'delete_partner' partner.pk %}"><button>Delete {{partner.cp_name}}'s Information</button></a></center></td>
+    </tr>
+</table>
+</div>
+</center>
+<center>
+<div style="margin: 12px 10%;">
 <h3>Mission</h3>
 {{partner.cp_mission}}
 </div>
 </center>
 <br>
+<center>
 <h2>Upcoming Volunteer Opportunities at {{partner.cp_name}}</h2>
+<div style="margin: 12px 10%;">
 <table>
     <colgroup>
         <col span='1' style="width: 20%">
@@ -36,33 +53,32 @@ a community partner-->
     </colgroup>
     {% if partner.events_calendar %}
         <tr>
-            <center>
             <th>Opportunity Name</th>
             <th>Date</th>
             <th>Duration (in hours)</th>
             <th>Volunteer Slots Filled</th>
-            </center>
         </tr>
         {% for event in partner.events_calendar %}
-        <center>
         <tr>
             <td><a href = "{% url 'show_event' event.pk %}">{{event.event_name}}</a></td>
             <td>{{event.service_date}}</td>
             <td>{{event.duration}}</td>
             <td>{{event.attendance}}/{{event.capacity}}</td>
         </tr>
-        </center>
         {% endfor %}
     {% else %}
     There are no events coming up at {{partner.cp_name}}, 
     would like you like to create <a href = "{% url 'add_event' %}">one here?</a>
     {% endif %}
 </table>
-<br>
+</div>
+</center>
+<div style="margin: 12px 10%;">
+<center>
 <h2>BU Student Service Impact</h2>
-Boston University students have completed {{partner.sum_old_events}} events at {{partner.cp_name}} for a total of {{partner.hours_recieved}} hours. 
-The total financial equivalent of this volunteer service is ${{partner.monetary_equiv}}. 
-<br>
+<p>Boston University students have completed {{partner.sum_old_events}} events at {{partner.cp_name}} for a total of {{partner.hours_recieved}} hours. 
+The total financial equivalent of this volunteer service is ${{partner.monetary_equiv}}.
+</p>
 <h2>Past Volunteers</h2>
 {% if partner.past_volunteers %}
         {% for volunteer in partner.past_volunteers %} 
@@ -74,6 +90,8 @@ The total financial equivalent of this volunteer service is ${{partner.monetary_
     No volunteers have served at {{partner.cp_name}} before!
     {% endif %}
 </table>
+</center>
+</div>
 {% else %}
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}

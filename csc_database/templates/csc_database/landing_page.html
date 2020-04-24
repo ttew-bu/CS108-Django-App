@@ -6,6 +6,14 @@ by requiring a superuser to log in-->
 <head>
     <link rel="stylesheet" href="http://cs-people.bu.edu/ttew/assets/css/main.css">
 </head>
-Hello! Please <a href = "{% url 'login' %}">log in</a> to the database to view this page.<br>
-You will ~not~ get a virus from clicking it, I just have not made this page look nice yet. <br>
-To log the username name is ttew and the password is superuser. 
+<center>
+<div style="margin: 50px 40%;">
+<h1>You have accessed the CSC Database</h1>
+<p>
+<h3>Use the buttons below to either advance to the database or go back to the CSC website</h3>
+To log in for grading the CS108 project, use azs for the username and cascs108 as the password.
+<ul><button><a style="all:unset" href = "{% url 'login' %}">Proceed to Database</a></button></ul>
+<ul><button><a style="all:unset" href = "https://www.bu.edu/csc">Return to CSC Homepage</a></button></ul>
+</p>
+</div>
+</center>

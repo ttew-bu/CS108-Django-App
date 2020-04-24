@@ -5,21 +5,25 @@
 {% extends 'csc_database/base.html'%}
 {% block content %}
 {% if user.is_authenticated %}
-<table>
+<center><h1>Assign Volunteers</h1></center>
+<div style="margin: 12px 10%;">
+<table style="font-size: 24px;">
     <tr>
-        <th>Volunteer Name</th>
-        <th>Volunteer BU ID</th>
+        <th><center>Volunteer Name</center></th>
+        <th><center>Volunteer BU ID</center></th>
+        <th> </th>
     </tr>
     {% for volunteer in event.all_vols %}
     <tr>
-    <td><a href="{% url 'show_volunteer' volunteer.pk %}">{{volunteer.first_name}} {{volunteer.last_name}}</a></td>
-    <td>{{volunteer.bu_id}}</td>
-    <td><form method='GET' action= "{% url 'add_to_event' volunteer_pk=volunteer.pk event_pk=event.pk %}"> <!--url only loads when a value is hard-coded in; homepage works fine -->
+    <td><center><a href="{% url 'show_volunteer' volunteer.pk %}">{{volunteer.first_name}} {{volunteer.last_name}}</center></a></td>
+    <td><center>{{volunteer.bu_id}}</center></td>
+    <td><center><form method='GET' action= "{% url 'add_to_event' volunteer_pk=volunteer.pk event_pk=event.pk %}"> 
         {% csrf_token %}
-        <input type='submit' name='Add to Event' value='Add to Event'></form></td>
+        <input type='submit' name='Add to Event' value='Add to Event'></form></center></td>
     </tr>
 {% endfor %}
 </table>
+</div>
 {% else %}
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}

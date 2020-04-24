@@ -4,7 +4,9 @@
 </head>
 
 {% block content %}
+<center>
 <h1>{{volunteer.first_name}} {{volunteer.last_name}}'s Volunteer History</h1>
+</center>
 <br>
 <table>
     <tr>
@@ -13,34 +15,34 @@
         <h2>
             Volunteer Information
         </h2>
-        <tr>
+        <tr style="font-size: 20px;">
             <td>Name:</td>
             <td> {{volunteer.first_name}} {{volunteer.last_name}}</td>
         </tr>
-        <tr>
+        <tr style="font-size: 20px;">
             <td>Class Year:</td>
             <td>{{volunteer.class_year}}</td>
         </tr>
-        <tr>
+        <tr style="font-size: 20px;">
             <td>BU ID:</td>
             <td>{{volunteer.bu_id}}</td>
         </tr>
-        <tr>
+        <tr style="font-size: 20px;">
             <td>Phone:</td>
             <td> {{volunteer.phone}}</td>
         </tr>
-        <tr>
+        <tr style="font-size: 20px;">
             <td>Email:</td>
             <td> {{volunteer.email}}</td>
         </tr>
-        <tr>
+        <tr style="font-size: 20px;">
             <td>Service Focus Area:</td>
             <td> {{volunteer.pref_service}}</td>
         </tr>
-        <tr><td><button><a style="all:unset" href="{% url 'update_volunteer' volunteer.pk %}">
-            Edit {{volunteer.first_name}}'s Information</a></button></td>
-        <td><button><a style="all:unset" href="{% url 'assign_vol' volunteer.pk %}">
-            Assign {{volunteer.first_name}} to event</a></button></td></tr>
+        <tr><td><a style="all:unset" href="{% url 'update_volunteer' volunteer.pk %}"><button>
+            Edit {{volunteer.first_name}}'s Information</button></a></td>
+        <td><a style="all:unset" href="{% url 'assign_vol' volunteer.pk %}"><button style="background-color: cornflowerblue;">
+            Assign {{volunteer.first_name}} to event</button></a></td></tr>
     </table>
     </td>
     <td>
@@ -105,9 +107,14 @@
     <td>
     <h2>Individual Volunteer Impact</h2>
     {% if volunteer.hours_served %}
-    {{volunteer.first_name}} has served {{volunteer.hours_served}} hours. 
+    <p style="font-size: 26px;">
+    {{volunteer.first_name}} has served {{volunteer.hours_served}} hours.<br>
+    {{volunteer.first_name}} has attended {{volunteer.number_completed}} events. 
+    </p>
     {% else %}
-    {{volunteer.first_name}} has not performed any service. 
+    <p style="font-size: 26px;">
+    {{volunteer.first_name}} has not performed any service.
+    </p>
     {% endif %}
     </td>
     </tr>

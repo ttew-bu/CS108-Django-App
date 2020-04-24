@@ -64,6 +64,18 @@ class Volunteer(models.Model):
         #return the list of events that have been completed as of today
         return com_events
 
+    def number_completed(self):
+        '''return a number of completed service events for a vol'''
+
+        # find completed events
+        events = self.completed_events()
+
+        # count the list
+        number = len(events)
+
+        #return the number
+        return number
+        
     def incomplete_events(self):
         '''return a list of completed service events'''
 
@@ -267,7 +279,7 @@ class ServiceEvent(models.Model):
         '''Return a list of vols to add from'''
 
         #excludes volunteers that are already signed up for the event
-        vols = Volunteer.objects.exclude(service_events=self.pk)
+        vols = Volunteer.objects.exclude(service_events=self.pk).order_by('last_name')
 
         return vols
 

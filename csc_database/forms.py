@@ -79,6 +79,7 @@ class CreateEventForm(forms.ModelForm):
     #duration is a decimal because events can be portions of hours; initial value is 2 because most events are a couple hours 
     duration = forms.DecimalField(label="Duration (in hours)", max_digits=4, decimal_places=2, initial=2.00, required=True)
     start_time=forms.TimeField(label="Start Time", required=True)
+    service_date = forms.DateField(label="Date", widget=forms.SelectDateWidget(years=[x for x in range(2018,2030)]), required=True)
     #capacity is an integer because you cannot have half people at events. 
     capacity = forms.IntegerField(label="Capacity", required=True)
     #service value is a decimal field because currenecy needs cents and dollars. 
@@ -93,7 +94,7 @@ class UpdateEventForm(forms.ModelForm):#same as the create event form so as to n
     '''A form to add events to the database'''
     event_name = forms.CharField(label ="Name", required=True)
     event_description = forms.CharField(label="Description", required=True)
-    service_date = forms.DateField(label="Date and Start Time", required=True)
+    service_date = forms.DateField(label="Date", widget=forms.SelectDateWidget(years=[x for x in range(2018,2030)]), required=True)
     start_time=forms.TimeField(label="Start Time", required=True)
     duration = forms.DecimalField(label="Duration (in hours)", max_digits=4, decimal_places=2, initial=2.00, required=True)
     capacity = forms.IntegerField(label="Capacity", required=True)

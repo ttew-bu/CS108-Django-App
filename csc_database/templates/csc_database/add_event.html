@@ -5,13 +5,13 @@ user inputs to the server-->
 <head>
     <title>Add New Service Event</title>
 </head>
-
 {% extends 'csc_database/base.html' %}
 
 {% block content %}
 
 {% if user.is_authenticated %}
-<h2>Add an Event</h2>
+<center><h2>Update an Event</h2></center>
+<div style="margin: 24px 10%;">
 <form method='POST'>
 {% csrf_token %}
 <!--CSRF used to verify posts with the server/prevent SQL injection-->
@@ -24,13 +24,12 @@ user inputs to the server-->
         <td>{{field.errors|striptags}}</td><!--Will give the error, if it exists and tell you how to fix it-->
     </tr>
     {% endfor %}
-    <tr>
-        <td>
-        <input type="submit" value="Add Event" name="Add Event">
-        </td>
-    </tr>
     </table>
+
+        <center><input type="submit" value="Add Event" name="Update Event"></center>
+
 </form>
+</div>
 {% else %}
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}

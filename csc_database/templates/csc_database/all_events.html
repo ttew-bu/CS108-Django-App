@@ -19,7 +19,7 @@ List all events on the current calendar and allow for CP and event navigation-->
         <th>Event Date</th>
         <th>Event Duration</th>
         <th>Community partner</th>
-        <th><button><a style="all:unset" style="font-style: italic;" href ="{% url 'add_event' %}">Add New Event</a></button></th>
+        <th><a style="font-style: italic;" href ="{% url 'add_event' %}"><button style="background-color: cornflowerblue;">Add New Event</button></a></th>
     </tr>
     {% for event in all_events %}
     <tr style="font-size: large;">
@@ -27,7 +27,7 @@ List all events on the current calendar and allow for CP and event navigation-->
     <td>{{event.service_date}}</td>
     <td>{{event.duration}}</td>
     <td style="font-style: italic;"><a href ="{% url 'show_partner' event.cp.pk %}">{{event.cp.cp_name}}</a></td>
-    <td style="color: rgb(204, 0, 0);"><a style="all:unset" href="{% url 'delete_event' event_pk=event.pk %}"> Delete Event</a></td>
+    <td style="color: rgb(204, 0, 0);"><a style="all:unset" href="{% url 'delete_event' event_pk=event.pk %}"><button>Delete Event</button></a></td>
     </tr>
 {% endfor %}
 </table>

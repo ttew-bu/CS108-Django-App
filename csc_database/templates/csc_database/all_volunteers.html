@@ -21,7 +21,7 @@ Displays all volunteers in the CSC-->
         <th>BU ID</th>
         <th>Class Year</th>
         <th>Area of Interest</th>
-        <th style="font-style: italic;"><a style="all:unset" href ="{% url 'add_volunteer' %}">Add New Volunteer</a></button>
+        <th><a href ="{% url 'add_volunteer' %}"><button style="background-color: cornflowerblue;">Add New Volunteer</button></a></button>
         </th>
     </tr>
     {% for volunteer in all_volunteers %}
@@ -32,7 +32,7 @@ Displays all volunteers in the CSC-->
         <td style="color: rgb(39, 39, 39);">{{volunteer.bu_id}}</td>
         <td style="color: rgb(39, 39, 39);">{{volunteer.class_year}}</td>
         <td style="color: rgb(39, 39, 39);">{{volunteer.pref_service}}</td>
-        <td style="color: rgb(204, 0, 0);"><a style="all:unset" href="{% url 'delete_volunteer' volunteer_pk=volunteer.pk %}">Delete Volunteer</a></td>
+        <td style="color: rgb(204, 0, 0);"><a style="all:unset" href="{% url 'delete_volunteer' volunteer_pk=volunteer.pk %}"><button>Delete Volunteer</button></a></a></td>
     </tr>
 </center>
     {% endfor %}

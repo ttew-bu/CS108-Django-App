@@ -237,6 +237,22 @@ def add_volunteer(request, volunteer_pk, event_pk):
 
     return url
 
+def add_volunteer_return_vol(request, volunteer_pk, event_pk):
+    '''add volunteer to an event with the click of a button'''
+    print("volunteerpk=%s eventpk=%s" % (volunteer_pk, event_pk))
+    
+    volunteer = Volunteer.objects.get(pk=volunteer_pk)
+    
+    event = ServiceEvent.objects.get(pk=event_pk)
+    print("adding %s to %s" % (volunteer, event))
+    volunteer.service_events.add(event)
+
+    volunteer.save()
+
+    url = redirect(reverse('show_volunteer', kwargs={'pk':volunteer_pk}))
+
+    return url
+
 def remove_volunteer(request, volunteer_pk, event_pk):
     '''remove a volunteer from an event with the click of a button'''
 

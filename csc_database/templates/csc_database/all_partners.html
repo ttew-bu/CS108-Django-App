@@ -14,19 +14,21 @@ This code creates the all community partners display view-->
     <colgroup>
         <col span='4' style="width: 25%">
     </colgroup>
-    <tr style="font-size: 32px; font-variant-caps: petite-caps;">
-        <th>Name</th>
-        <th>Logo</th>
-        <th>Focus Area</th>
-        <th style="font-style: italic;"><a style="all:unset" href ="{% url 'add_partner' %}">Add New Partner</a></th>
+    <tr style="font-size: 24px; font-variant-caps: petite-caps;">
+        <th><center>Name</center></th>
+        <th><center>Logo</center></th>
+        <th><center>Focus Area</center></th>
+        <th><center><a href ="{% url 'add_partner' %}"><button style="background-color: cornflowerblue;">
+            Add New Partner</button></a></center></th>
     </tr>
     {% for partner in all_partners %}
     <center>
     <tr>
-    <td style="font-size: 24; font-style: italic;"><a href ="{% url 'show_partner' partner.pk %}">{{partner.cp_name}}</a></td>
-    <td><img src="{{partner.cp_image.url}}" style="max-width: 250;"></td>
-    <td style="font-size: 24;">{{partner.cp_type}}</td>
-    <td style="font-size: 24; color: rgb(204,0,0);"><a style="all:unset" href="{% url 'delete_partner' partner_pk=partner.pk %}">Delete Partner</a></td>
+    <td style="font-size: 24; font-style: italic;"><center><a href ="{% url 'show_partner' partner.pk %}">{{partner.cp_name}}</a></center></td>
+    <td><center><img src="{{partner.cp_image.url}}" style="max-width: 250;"></center></td>
+    <td style="font-size: 24;"><center>{{partner.cp_type}}</center></td>
+    <td style="font-size: 24; color: rgb(204,0,0);"><center><a style="all:unset" href="{% url 'delete_partner' partner_pk=partner.pk %}">
+        <button>Delete Partner</button></a></center></a></td>
     </tr>
 </center>
 {% endfor %}

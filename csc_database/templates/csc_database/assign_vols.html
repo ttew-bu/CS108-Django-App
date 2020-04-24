@@ -5,25 +5,25 @@
 {% extends 'csc_database/base.html'%}
 {% block content %}
 {% if user.is_authenticated %}
-<table>
+<table  style="font-size: 24px;">
     <tr>
-        <th>Event Name</th>
-        <th>Event Date</th>
-        <th>Event Duration</th>
-        <th>Community partner</th>
-        <th>Capacity</th>
-        <th> </th>
+        <th><center>Event Name</center></th>
+        <th><center>Event Date</center></th>
+        <th><center>Event Duration</center></th>
+        <th><center>Community Partner</center></th>
+        <th><center>Capacity</center></th>
+        <th> </th><!--Left blank so that the CSS element for this row looks even-->
     </tr>
     {% for event in volunteer.eventlist %}
     <tr>
-    <td><a href="{% url 'show_event' event.pk %}">{{event.event_name}}</a></td>
-    <td>{{event.service_date}}</td>
-    <td>{{event.duration}}</td>
-    <td><a href ="{% url 'show_partner' event.cp.pk %}">{{event.cp.cp_name}}</a></td>
-    <td>{{event.attendance}}/{{event.capacity}}</td>
-    <td><form method='GET' action= "{% url 'add_to_event' volunteer_pk=volunteer.pk event_pk=event.pk %}"> <!--url only loads when a value is hard-coded in; homepage works fine -->
+    <td><center><a href="{% url 'show_event' event.pk %}">{{event.event_name}}</a></center></td>
+    <td><center>{{event.service_date}}</center></td>
+    <td><center>{{event.duration}}</center></td>
+    <td><center><a href ="{% url 'show_partner' event.cp.pk %}">{{event.cp.cp_name}}</center></a></td>
+    <td><center>{{event.attendance}}/{{event.capacity}}</center></td>
+    <td><center><form method='GET' action= "{% url 'add_vol_to_event' volunteer_pk=volunteer.pk event_pk=event.pk %}"> <!--url only loads when a value is hard-coded in; homepage works fine -->
         {% csrf_token %}
-        <input type='submit' name='Add to Event' value='Add to Event'></form></td>
+        <input type='submit' name='Add to Event' value='Add to Event'></center></form></td>
     </tr>
 {% endfor %}
 </table>
