@@ -42,7 +42,7 @@ class Volunteer(models.Model):
 
         return reverse("show_volunteer", kwargs={"pk": self.pk})
 
-    def eventlist(self):
+    def event_list(self): 
         '''List of events for a volunteer to be added to'''
 
         list_ev = ServiceEvent.objects.all()

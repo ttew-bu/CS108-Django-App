@@ -15,9 +15,9 @@
     </tr>
     {% for volunteer in event.all_vols %}
     <tr>
-    <td><center><a href="{% url 'show_volunteer' volunteer.pk %}">{{volunteer.first_name}} {{volunteer.last_name}}</center></a></td>
-    <td><center>{{volunteer.bu_id}}</center></td>
-    <td><center><form method='GET' action= "{% url 'add_to_event' volunteer_pk=volunteer.pk event_pk=event.pk %}"> 
+        <td><center><a href="{% url 'show_volunteer' volunteer.pk %}">{{volunteer.first_name}} {{volunteer.last_name}}</center></a></td>
+        <td><center>{{volunteer.bu_id}}</center></td>
+        <td><center><form method='GET' action= "{% url 'add_to_event' volunteer_pk=volunteer.pk event_pk=event.pk %}"> 
         {% csrf_token %}
         <input type='submit' name='Add to Event' value='Add to Event'></form></center></td>
     </tr>
