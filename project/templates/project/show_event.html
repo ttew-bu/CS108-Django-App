@@ -19,6 +19,7 @@ an event-->
     <tr style="font-size: 26px;"><td>Date:</td><td> {{event.service_date}}</td></tr>
     <tr style="font-size: 26px;"><td>Start Time:</td><td> {{event.start_time}}</td></tr>
     <tr style="font-size: 26px;"><td>Event Duration:</td><td> {{event.duration}} hours</td></tr>
+    <tr style="font-size: 26px;"><td>Event Description:</td><td> {{event.event_description}}</td></tr>
     <tr style="font-size: 26px;"><td>Volunteer Count:</td><td>{{event.attendance}}/{{event.capacity}}</td></tr>
     <tr style="font-size: 26px;"><td>Community Partner:</td><td><a href="{% url 'show_partner' event.cp.pk%}">{{event.cp.cp_name}}</a></td></tr>
     <tr>
