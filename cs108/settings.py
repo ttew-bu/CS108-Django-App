@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'quotes',
     'mini_fb', # new app
-    'csc_database', #final project
+    'project', #final project
     'phonenumber_field', #additional app for project
 ]
 

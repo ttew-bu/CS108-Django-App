@@ -25,7 +25,7 @@ urlpatterns = [
     path('pages/', include('pages.urls')), ##old! link in URLS from our app
     path('quotes/', include('quotes.urls')), #urls from quotes project
     path('mini_fb/', include('mini_fb.urls')), #mini fb
-    path('csc_database/', include('csc_database.urls')), #FINAL PROJECT
+    path('project/', include('project.urls')), #FINAL PROJECT
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

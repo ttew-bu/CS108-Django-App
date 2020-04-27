@@ -1,0 +1,37 @@
+<!--update_event.html
+tristan tew
+this page depicts the update event page and submits 
+user inputs to the server-->
+<head>
+    <title>Update Event</title>
+</head>
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<center><h2>Update an Event</h2></center>
+<div style="margin: 24px 10%;">
+<form method='POST'>
+{% csrf_token %}
+<!--CSRF used to verify posts with the server/prevent SQL injection-->
+    <table>
+    {% for field in form %}
+    <!--Loop used to populate the page with volunteer attributes-->
+    <tr>
+        <th>{{field.label}}</th>
+        <td>{{field}}</td>
+        <td>{{field.errors|striptags}}</td><!--Will give the error, if it exists and tell you how to fix it-->
+    </tr>
+    {% endfor %}
+    </table>
+
+        <center><input type="submit" value="Update Event" name="Update Event"></center>
+
+</form>
+</div>
+{% else %}
+Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
+{% endif %}
+{% endblock %}
