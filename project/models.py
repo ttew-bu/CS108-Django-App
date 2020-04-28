@@ -158,8 +158,8 @@ class CommunityPartner(models.Model):
         #find all of the old events for a partner
         events = self.old_events()
 
-        #filter volunteers by those who attended the events in the list above
-        volunteers = Volunteer.objects.filter(service_events__in=events)
+        #filter volunteers by those who attended the events in the list above and prevent repeats
+        volunteers = Volunteer.objects.filter(service_events__in=events).distinct()
 
         #return the past volunteers
         return volunteers
