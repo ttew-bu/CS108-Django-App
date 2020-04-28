@@ -2,6 +2,7 @@
 tristan tew
 this page depicts the update event page and submits 
 user inputs to the server-->
+
 <head>
     <title>Update Event</title>
 </head>
@@ -10,10 +11,13 @@ user inputs to the server-->
 
 {% block content %}
 
-{% if user.is_authenticated %}
+{% if user.is_authenticated %}<!--If django auth is logged in-->
+
 <center><h2>Update an Event</h2></center>
+
 <div style="margin: 24px 10%;">
 <form method='POST'>
+
 {% csrf_token %}
 <!--CSRF used to verify posts with the server/prevent SQL injection-->
     <table>
@@ -27,11 +31,12 @@ user inputs to the server-->
     {% endfor %}
     </table>
 
-        <center><input type="submit" value="Update Event" name="Update Event"></center>
+    <center><input type="submit" value="Update Event" name="Update Event"></center>
 
 </form>
 </div>
-{% else %}
+
+{% else %}<!--If django auth is not logged in-->
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 {% endblock %}

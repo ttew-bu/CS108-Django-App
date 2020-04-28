@@ -1,10 +1,16 @@
+<!--name:assign_vols.html
+author:tristan tew (ttew@bu.edu)
+description:This page displays a list of events to add 
+one volunteer to-->
+
 <head>
     <title>CSC Events</title>
 </head>
 
 {% extends 'project/base.html'%}
 {% block content %}
-{% if user.is_authenticated %}
+{% if user.is_authenticated %}<!--If django auth is logged in-->
+
 <table  style="font-size: 24px;">
     <tr>
         <th><center>Event Name</center></th>
@@ -21,13 +27,17 @@
         <td><center>{{event.duration}}</center></td>
         <td><center><a href ="{% url 'show_partner' event.cp.pk %}">{{event.cp.cp_name}}</center></a></td>
         <td><center>{{event.attendance}}/{{event.capacity}}</center></td>
-        <td><center><form method='GET' action= "{% url 'add_vol_to_event' volunteer_pk=volunteer.pk event_pk=event.pk %}"> <!--url only loads when a value is hard-coded in; homepage works fine -->
+        <td><center><form method='GET' action= "{% url 'add_vol_to_event' volunteer_pk=volunteer.pk event_pk=event.pk %}">
+            <!--Add function works using the PK of the event in the list and the vol's pk-->
         {% csrf_token %}
         <input type='submit' name='Add to Event' value='Add to Event'></center></form></td>
     </tr>
+
 {% endfor %}
+
 </table>
-{% else %}
+
+{% else %}<!--If django auth is not logged in-->
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 

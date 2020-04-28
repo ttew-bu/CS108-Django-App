@@ -1,22 +1,29 @@
+<!--name: delete_partner.html
+author: tristan tew (ttew@bu.edu)
+description:This page presents the optionset when a user tries
+to delete a partner-->
 
 {% extends 'project/base.html' %}
+
 <head>
     <Title> Delete Partner</Title>
 </head>
 
 {% block content %}
-{% if user.is_authenticated %}
+{% if user.is_authenticated %}<!--If Django auth is logged in-->
 
 <center>
 <h1>Are you sure you want to delete {{partner.cp_name}}?</h1>
 
 <div>
+    <!--Delete and return to the main list for partners-->
     <ul>
         <form method='POST'>
             {% csrf_token %}
             <input type = 'submit' value='Delete'>
         </form>
     </ul>
+    <!--Don't delete and return to the main list for partners-->
     <ul>
         <form method='GET' action = "{% url 'all_partners' %}">
             {% csrf_token %}
@@ -26,7 +33,7 @@
 </div>
 </center>
 
-{% else %}
+{% else %}<!--If django auth is not logged in-->
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 

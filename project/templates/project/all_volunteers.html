@@ -1,6 +1,7 @@
-<!--all_volunteers.html 
-tristan tew (ttew@bu.edu
-Displays all volunteers in the CSC-->
+<!--name: all_volunteers.html 
+author: tristan tew (ttew@bu.edu
+description: Displays all volunteers in the database using a listview;
+also allows for navigation to their pages and deletion-->
 
 <head>
     <title>CSC Volunteers</title>
@@ -10,21 +11,26 @@ Displays all volunteers in the CSC-->
 
 {% block content %}
 
-{% if user.is_authenticated %}
+{% if user.is_authenticated %}<!--If django auth is logged in-->
+
 <center>
 <table>
+
     <colgroup>
-        <col span='5' style="width: 20%">
+        <col span='5' style="width: 20%"> <!--Account for 5 spaced columns-->
     </colgroup>
+
     <tr style="font-size: x-large; font-variant-caps: petite-caps;">
         <th>Name</th>
         <th>BU ID</th>
         <th>Class Year</th>
         <th>Area of Interest</th>
-        <th><a href ="{% url 'add_volunteer' %}"><button style="background-color: cornflowerblue;">Add New Volunteer</button></a></button>
-        </th>
+        <th><a href ="{% url 'add_volunteer' %}"><button style="background-color: cornflowerblue;">
+            Add New Volunteer</button></a></button></th>
     </tr>
+
     {% for volunteer in all_volunteers %}
+    <!--Populate the table with information for every volunteer on the server-->
     <center>
     <tr style="font-size: x-large;">
         <td style="font-style: italic;">
@@ -32,13 +38,16 @@ Displays all volunteers in the CSC-->
         <td style="color: rgb(39, 39, 39);">{{volunteer.bu_id}}</td>
         <td style="color: rgb(39, 39, 39);">{{volunteer.class_year}}</td>
         <td style="color: rgb(39, 39, 39);">{{volunteer.pref_service}}</td>
-        <td style="color: rgb(204, 0, 0);"><a style="all:unset" href="{% url 'delete_volunteer' volunteer_pk=volunteer.pk %}"><button>Delete Volunteer</button></a></a></td>
+        <td style="color: rgb(204, 0, 0);"><a style="all:unset" href="{% url 'delete_volunteer' volunteer_pk=volunteer.pk %}">
+            <button>Delete Volunteer</button></a></a></td>
     </tr>
 </center>
     {% endfor %}
+
 </table>
 </center>
-{% else %}
+
+{% else %}<!--If django auth not logged in-->
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 {% endblock %}

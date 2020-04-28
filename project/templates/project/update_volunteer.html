@@ -10,10 +10,11 @@ user inputs to the server-->
 
 {% block content %}
 
-{% if user.is_authenticated %}
+{% if user.is_authenticated %}<!--If django auth is logged in-->
 <center><h2>Update a Volunteer</h2></center>
 <form method='POST'>
     <div style="margin: 24px 10%;">
+
     {% csrf_token %}
     <!--CSRF used to verify posts with the server/prevent SQL injection-->
         <table>
@@ -32,7 +33,8 @@ user inputs to the server-->
     </form>
     </div>
 </form>
-{% else %}
+
+{% else %}<!--if django admin is not logged in-->
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 {% endblock %}

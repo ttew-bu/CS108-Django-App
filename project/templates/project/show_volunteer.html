@@ -1,3 +1,9 @@
+<!--name: show_volunteer.html
+author:tristan tew (ttew@bu.edu
+description:THis page shows a volunteer,
+their events, and allows the user to edit their 
+information using nested tables-->
+
 {% extends 'project/base.html' %}
 <head>
     <Title> {{volunteer.first_name}}'s Volunteer History</Title>
@@ -8,10 +14,14 @@
 <h1>{{volunteer.first_name}} {{volunteer.last_name}}'s Volunteer History</h1>
 </center>
 <br>
-<table>
+
+<table><!--Use nested tables to make a better UI-->
     <tr>
-    <td>
+    <td><!--Each table will be a data point in one row of the parent table-->
+
     <table>
+        <!--The first table displays the volunteer's basic infomation-->
+
         <h2>
             Volunteer Information
         </h2>
@@ -19,36 +29,47 @@
             <td>Name:</td>
             <td> {{volunteer.first_name}} {{volunteer.last_name}}</td>
         </tr>
+
         <tr style="font-size: 20px;">
             <td>Class Year:</td>
             <td>{{volunteer.class_year}}</td>
         </tr>
+
         <tr style="font-size: 20px;">
             <td>BU ID:</td>
             <td>{{volunteer.bu_id}}</td>
         </tr>
+
         <tr style="font-size: 20px;">
             <td>Phone:</td>
             <td> {{volunteer.phone}}</td>
         </tr>
+
         <tr style="font-size: 20px;">
             <td>Email:</td>
             <td> {{volunteer.email}}</td>
         </tr>
+
         <tr style="font-size: 20px;">
             <td>Service Focus Area:</td>
             <td> {{volunteer.pref_service}}</td>
         </tr>
+
+        <!--At the bottom of the info table, present the update and delete buttons-->
         <tr><td><a style="all:unset" href="{% url 'update_volunteer' volunteer.pk %}"><button>
             Edit {{volunteer.first_name}}'s Information</button></a></td>
         <td><a style="all:unset" href="{% url 'assign_vol' volunteer.pk %}"><button style="background-color: cornflowerblue;">
             Assign {{volunteer.first_name}} to event</button></a></td></tr>
     </table>
     </td>
+
+    <!--The second table depicts upcoming volunteer events-->
     <td>
     <h2>Upcoming Service Events</h2>
-    <table>
+        <table>
         {% if volunteer.incomplete_events %}
+        <!--If the volunteer is signed up for future events,
+        populate the table below-->
         <tr>
             <center>
             <th>Opportunity Name</th>
@@ -58,7 +79,9 @@
             </center>
         </tr>
         {% for event in volunteer.incomplete_events %}
+        <!--Iterate through the events to fill the tabel-->
         <center>
+
         <tr>
             <td><a href = "{% url 'show_event' event.pk %}">{{event.event_name}}</a></td>
             <td>{{event.service_date}}</td>
@@ -69,29 +92,41 @@
             </td>
         </tr>
         </center>
+
         {% endfor %}
-        {% else %}
-    </table>
+
+        {% else %}<!--If not, close the table and display the prompt below-->
+        </table>
         {{volunteer.first_name}} is not scheduled for any future events. 
         {% endif %}
+
     </table>
     </td>
     </tr>
+    <!--These lines depict the nested tables being stored in a singular row-->
 </table>
+
+<!--This new nested table displays past events and the impact of service-->
 <br>
 <table>
     <tr>
     <td>
+
+    <!--The last nested table shows completed volunteer events-->
     <h2>Past Service Events</h2>
     <table>
         {% if volunteer.completed_events %}
+        <!--If there are past events, iterate through them-->
+
         <tr>
             <center>
             <th>Opportunity Name</th>
             <th>Date and Time</th>
             </center>
         </tr>
+
         {% for event in volunteer.completed_events %}
+        <!--iterate through the completed events-->
         <center>
         <tr>
             <td><a href = "{% url 'show_event' event.pk %}">{{event.event_name}}</a></td>
@@ -99,23 +134,27 @@
         </tr>
         </center>
         {% endfor %}
-        {% else %}
+
+        {% else %}<!--if they have not done events, show this prompt-->
         {{volunteer.first_name}} has not signed up for an event before. 
         {% endif %}
     </table>
     </td>
+
     <td>
-    <h2>Individual Volunteer Impact</h2>
-    {% if volunteer.hours_served %}
-    <p style="font-size: 26px;">
-    {{volunteer.first_name}} has served {{volunteer.hours_served}} hours.<br>
-    {{volunteer.first_name}} has attended {{volunteer.number_completed}} events. 
-    </p>
-    {% else %}
-    <p style="font-size: 26px;">
-    {{volunteer.first_name}} has not performed any service.
-    </p>
+        <h2>Individual Volunteer Impact</h2>
+        {% if volunteer.hours_served %}<!--If the volunteer has completed service-->
+        <p style="font-size: 26px;">
+        {{volunteer.first_name}} has served {{volunteer.hours_served}} hours.<br>
+        {{volunteer.first_name}} has attended {{volunteer.number_completed}} events. 
+        </p>
+
+        {% else %}<!--If the volunteer has not completed service -->
+        <p style="font-size: 26px;">
+        {{volunteer.first_name}} has not performed any service.
+        </p>
     {% endif %}
+
     </td>
     </tr>
 </table>

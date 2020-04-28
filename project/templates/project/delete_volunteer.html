@@ -1,3 +1,7 @@
+<!--name: delete_volunteer.html
+author: tristan tew (ttew@bu.edu)
+description:This page presents the option set when a user tries
+to delete a volunteer-->
 
 {% extends 'project/base.html' %}
 <head>
@@ -5,17 +9,19 @@
 </head>
 
 {% block content %}
-{% if user.is_authenticated %}
+{% if user.is_authenticated %}<!--If logged in using django auth-->
 
 <center>
     <h1>Are you sure you want to delete {{volunteer.first_name}} {{volunteer.last_name}}'s information?</h1>
     <div>
+        <!--Delete the volunteer and return the list of volunteers-->
         <ul>
             <form method='POST'>
                 {% csrf_token %}
                 <input type = 'submit' value='Delete'>
             </form>
         </ul>
+        <!--DOn't delete the volunteer and return to the volunteer lsit-->
         <ul>
             <form method='GET' action = "{% url 'all_volunteers' %}">
                 {% csrf_token %}
@@ -24,7 +30,8 @@
         </ul>
     </div>
     </center>
-{% else %}
+
+{% else %}<!-- if not logged into django auth-->
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 

@@ -2,6 +2,7 @@
 tristan tew
 this page depicts the add a volunteer page and submits 
 user inputs to the server-->
+
 <head>
     <title>Update Partner</title>
 </head>
@@ -10,11 +11,13 @@ user inputs to the server-->
 
 {% block content %}
 
-{% if user.is_authenticated %}
+{% if user.is_authenticated %}<!--if django auth is logged in-->
+
 <center><h2>Update a Partner</h2></center>
 <form method='POST' enctype="multipart/form-data">
+    <!--Include datatypes for the CP's logo image-->
     <div style="margin: 24px 10%;">
-    <form method='POST'>
+
     {% csrf_token %}
     <!--CSRF used to verify posts with the server/prevent SQL injection-->
         <table>
@@ -32,7 +35,8 @@ user inputs to the server-->
     
     </form>
     </div>
-{% else %}
+
+{% else %}<!--If django admin is not logged in-->
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 {% endblock %}

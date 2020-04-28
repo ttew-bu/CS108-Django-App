@@ -1,19 +1,26 @@
-<!--all_partners.html
-Tristan Tew (ttew@bu.edu
-This code creates the all community partners display view-->
+<!--name:all_partners.html
+author: Tristan Tew (ttew@bu.edu
+description: This page displays all community partners using a list view;
+you can navigate to their pages or delete them on this page-->
 
 <head>
     <title>CSC Community Partners</title>
 </head>
 
 {% extends 'project/base.html'%}
+
 {% block content %}
-{% if user.is_authenticated %}
+
+{% if user.is_authenticated %}<!--If django auth logged in-->
+
 <center>
+
 <table>
+    
     <colgroup>
-        <col span='4' style="width: 25%">
+        <col span='4' style="width: 25%"><!--Account for 4 evenly spaced columns-->
     </colgroup>
+
     <tr style="font-size: 24px; font-variant-caps: petite-caps;">
         <th><center>Name</center></th>
         <th><center>Logo</center></th>
@@ -21,7 +28,10 @@ This code creates the all community partners display view-->
         <th><center><a href ="{% url 'add_partner' %}"><button style="background-color: cornflowerblue;">
             Add New Partner</button></a></center></th>
     </tr>
+
     {% for partner in all_partners %}
+    <!--Populating the table for every partner on the database-->
+
     <center>
     <tr>
         <td style="font-size: 24; font-style: italic;"><center><a href ="{% url 'show_partner' partner.pk %}">{{partner.cp_name}}</a>
@@ -32,10 +42,12 @@ This code creates the all community partners display view-->
         <button>Delete Partner</button></a></center></a></td>
     </tr>
 </center>
+
 {% endfor %}
 </table>
 </center>
-{% else %}
+
+{% else %}<!--If Django auth is not logged in-->
 Please <a style="all:unset" href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 

@@ -1,70 +1,92 @@
 <!--show_event.html
 Tristan Tew (ttew@bu.edu)
 This code creates the individual display page for
-an event-->
+an event and allows user navigation to the partners
+and volunteers that are related-->
+
 {% extends 'project/base.html' %}
 <head>
     <Title> {{event.event_name}}</Title>
 </head>
+
 {% block content %}
-{% if user.is_authenticated %}
+{% if user.is_authenticated %}<!-- If logged in to Django Auth-->
+
 <center>
 <h1>{{event.event_name}}</h1>
 </center>
+
 <table>
-    <td>
+
+    <td><!--Nested tables to make a clean UI-->
     <table>
+
         <center>
-    <h2>Event Information</h2>
-    <tr style="font-size: 26px;"><td>Date:</td><td> {{event.service_date}}</td></tr>
-    <tr style="font-size: 26px;"><td>Start Time:</td><td> {{event.start_time}}</td></tr>
-    <tr style="font-size: 26px;"><td>Event Duration:</td><td> {{event.duration}} hours</td></tr>
-    <tr style="font-size: 26px;"><td>Event Description:</td><td> {{event.event_description}}</td></tr>
-    <tr style="font-size: 26px;"><td>Volunteer Count:</td><td>{{event.attendance}}/{{event.capacity}}</td></tr>
-    <tr style="font-size: 26px;"><td>Community Partner:</td><td><a href="{% url 'show_partner' event.cp.pk%}">{{event.cp.cp_name}}</a></td></tr>
-    <tr>
-<td><a style="all:unset" href="{% url 'update_event' event.pk %}"><button>Edit Event Information</button></a></td>
-<td><a style="all: unset" href="{% url 'assign_event' event.pk %}"><button style="background-color: cornflowerblue;">Assign Volunteers from List</button></a></td>
-    </tr>
-</center>
-</table>
-</td>
-<td>
-<h2>Volunteers In Attendance</h2>
-{% if event.volunteer_list %}
-<table>
+        <h2>Event Information</h2>
+
+            <tr style="font-size: 26px;"><td>Date:</td><td> {{event.service_date}}</td></tr>
+            <tr style="font-size: 26px;"><td>Start Time:</td><td> {{event.start_time}}</td></tr>
+            <tr style="font-size: 26px;"><td>Event Duration:</td><td> {{event.duration}} hours</td></tr>
+            <tr style="font-size: 26px;"><td>Event Description:</td><td> {{event.event_description}}</td></tr>
+            <tr style="font-size: 26px;"><td>Volunteer Count:</td><td>{{event.attendance}}/{{event.capacity}}</td></tr>
+            <tr style="font-size: 26px;"><td>Community Partner:</td><td><a href="{% url 'show_partner' event.cp.pk%}">{{event.cp.cp_name}}</a></td></tr>
+
+            <tr><!--At the bottom of the table, display buttons for the user-->
+                <td><a style="all:unset" href="{% url 'update_event' event.pk %}"><button>Edit Event Information</button></a></td>
+            <td><a style="all: unset" href="{% url 'assign_event' event.pk %}"><button style="background-color: cornflowerblue;">Assign Volunteers from List</button></a></td>
+            </tr>
+        </center>
+    </table>
+    </td>
+    
+    <!--Second nested table displays the attending volunteers-->
+    <td>
+
+    <h2>Volunteers In Attendance</h2>
+    <!--iterate through all volunteers that have this event 
+    in their many to many field for events if there are any-->
+    {% if event.volunteer_list %}
+    <table>
     {% for volunteer in event.volunteer_list %}
-    <tr>
-        <td>
-            <a href="{% url 'show_volunteer' volunteer.pk %}">{{volunteer.first_name}} {{volunteer.last_name}}</a>
-        </td>
-        <td><form method='GET' action= "{% url 'remove_from_event' volunteer_pk=volunteer.pk event_pk=event.pk %}">
+
+        <tr>
+            <td>
+                <a href="{% url 'show_volunteer' volunteer.pk %}">{{volunteer.first_name}} {{volunteer.last_name}}</a>
+            </td>
+            <td><form method='GET' action= "{% url 'remove_from_event' volunteer_pk=volunteer.pk event_pk=event.pk %}">
             {% csrf_token %}
             <input type='submit' value='Remove'></form></td>
-    </tr>
+        </tr>
     {% endfor %}
-</table>
-{% else %}
-<br>
-There are no volunteers signed up for this event, use the "assign" button below to fix that!
-{% endif %}
-</td>
-<td>
-<h2>Recommended Volunteers</h2>
-<table>
-    {% for volunteer in event.rec_vols %}
-    <tr>
-        <td>
-            <a href="{% url 'show_volunteer' volunteer.pk %}">{{volunteer.first_name}} {{volunteer.last_name}}</a>
-        </td>
-        <td><form method='GET' action= "{% url 'add_to_event' volunteer_pk=volunteer.pk event_pk=event.pk %}">
+    </table>
+
+    {% else %}<!--if there are no volunteers in attendance, prompt the user to add some-->
+    <br>
+    There are no volunteers signed up for this event, use the "assign" button below to fix that!
+    {% endif %}
+    </td>
+
+    <td>
+    <h2>Recommended Volunteers</h2>
+
+    <table>
+        <!--Using the recomendation engine, populate this table with volunteers-->
+        {% for volunteer in event.rec_vols %}
+        <tr>
+            <td>
+                <a href="{% url 'show_volunteer' volunteer.pk %}">{{volunteer.first_name}} {{volunteer.last_name}}</a>
+            </td>
+            <td><form method='GET' action= "{% url 'add_to_event' volunteer_pk=volunteer.pk event_pk=event.pk %}">
             {% csrf_token %}
             <input style="background-color: cornflowerblue;" type='submit' value='Add'></form></td>
-    </tr>
+        </tr>
     {% endfor %}
-</table></td>
-</table>
-{% else %}
+    </table>
+    </td>
+
+</table><!--close the table housing the nested tables-->
+
+{% else %}<!--if django auth is not logged in-->
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 {% endblock %}

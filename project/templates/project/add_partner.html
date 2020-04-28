@@ -1,7 +1,8 @@
-<!--add_partner.html
-tristan tew
-this page depicts the add a volunteer page and submits 
+<!--name: add_partner.html
+author: tristan tew (ttew@bu.edu)
+description: this page depicts the add a volunteer page and submits 
 user inputs to the server-->
+
 <head>
     <title>Add New Partner</title>
 </head>
@@ -10,10 +11,13 @@ user inputs to the server-->
 
 {% block content %}
 
-{% if user.is_authenticated %}
+{% if user.is_authenticated %}<!--If django auth is logged in-->
+
 <center><h2>Add a Partner</h2></center>
+
 <form method='POST' enctype="multipart/form-data">
     <div style="margin: 24px 10%;">
+
     <form method='POST'>
     {% csrf_token %}
     <!--CSRF used to verify posts with the server/prevent SQL injection-->
@@ -28,11 +32,11 @@ user inputs to the server-->
         {% endfor %}
         </table>
     
-            <center><input type="submit" value="Add Partner"></center>
+        <center><input type="submit" value="Add Partner"></center>
     
     </form>
     </div>
-{% else %}
+{% else %}<!--If django admin not logged in-->
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 {% endblock %}

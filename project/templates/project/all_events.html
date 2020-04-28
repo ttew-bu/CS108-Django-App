@@ -1,39 +1,54 @@
-<!--all_events.html
-Tristan Tew (ttew@bu.edu)
-List all events on the current calendar and allow for CP and event navigation-->
+<!--name: all_events.html
+author: Tristan Tew (ttew@bu.edu)
+description: This page displays all events on the current calendar and allows for CP and event navigation-->
+
 <head>
     <title>CSC Events</title>
 </head>
 
 {% extends 'project/base.html'%}
+
 {% block content %}
-{% if user.is_authenticated %}
+
+{% if user.is_authenticated %}<!--Django auth logged in-->
+
 <center>
 <p>
 <table>
+
     <colgroup>
-        <col span='2' style="width: 20%">
+        <col span='2' style="width: 20%"><!--account for 5 columns evenly spaced-->
     </colgroup>
+
     <tr style="font-size: x-large; font-variant-caps: petite-caps;">
         <th>Event Name</th>
         <th>Event Date</th>
         <th>Event Duration</th>
         <th>Community partner</th>
-        <th><a style="font-style: italic;" href ="{% url 'add_event' %}"><button style="background-color: cornflowerblue;">Add New Event</button></a></th>
+        <th><a style="font-style: italic;" href ="{% url 'add_event' %}">
+            <button style="background-color: cornflowerblue;">Add New Event</button></a></th>
     </tr>
+
     {% for event in all_events %}
+    <!--Run a loop that populates the page for each event on the database-->
     <tr style="font-size: large;">
-        <td style="font-style: italic;"><a href="{% url 'show_event' event.pk %}">{{event.event_name}}</a></td>
+        <td style="font-style: italic;"><a href="{% url 'show_event' event.pk %}">
+            {{event.event_name}}</a></td>
         <td>{{event.service_date}}</td>
         <td>{{event.duration}}</td>
-        <td style="font-style: italic;"><a href ="{% url 'show_partner' event.cp.pk %}">{{event.cp.cp_name}}</a></td>
-        <td style="color: rgb(204, 0, 0);"><a style="all:unset" href="{% url 'delete_event' event_pk=event.pk %}"><button>Delete Event</button></a></td>
+        <td style="font-style: italic;"><a href ="{% url 'show_partner' event.cp.pk %}">
+            {{event.cp.cp_name}}</a></td><!--Use the partnter that is the event's pk to populate this-->
+        <td style="color: rgb(204, 0, 0);"><a style="all:unset" href="{% url 'delete_event' event_pk=event.pk %}">
+            <button>Delete Event</button></a></td>
     </tr>
-{% endfor %}
+
+    {% endfor %}
+
 </table>
 </center>
 </p>
-{% else %}
+
+{% else %}<!--If django admin is not logged in present this page-->
 Please <a style="color:rgb(204, 0, 0)" href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 {% endblock %}

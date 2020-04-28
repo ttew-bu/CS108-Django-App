@@ -1,20 +1,29 @@
+<!--name: delete_event.html
+author: tristan tew (ttew@bu.edu)
+description:This page presents the optionset when a user tries
+to delete an event-->
 
 {% extends 'project/base.html' %}
+
 <head>
     <Title>Delete {{event.event_name}}</Title>
 </head>
 
 {% block content %}
-{% if user.is_authenticated %}
+{% if user.is_authenticated %}<!--If Django Auth is logged in-->
+
 <center>
 <h1>Are you sure you want to delete {{event.event_name}} on {{event.service_date}}?</h1>
+
 <div>
+    <!--Return to the all events page, having deleted the event-->
     <ul>
         <form method='POST'>
             {% csrf_token %}
             <input type = 'submit' value='Delete'>
         </form>
     </ul>
+    <!--Return to the all events page instead of deleting-->
     <ul>
         <form method='GET' action = "{% url 'all_events' %}">
             {% csrf_token %}
@@ -23,7 +32,8 @@
     </ul>
 </div>
 </center>
-{% else %}
+
+{% else %}<!--If Django Auth is not logged in-->
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 {% endif %}
 

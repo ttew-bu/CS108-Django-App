@@ -1,46 +1,65 @@
+<!--name:home.html
+author: tristan tew (ttew@bu.edu)
+description:This displays the home page which includes
+the weekly calendar and some best practices using the site-->
+
 <head>
     <title>Welcome!</title>
 </head>
+
 {% extends 'project/base.html'%}
 {% block content %}
-{% if user.is_authenticated %}
+{% if user.is_authenticated %}<!--If django auth is logged in-->
+
 <body>
 <center>
 <h1>Welcome to the CSC Database!</h1>
+
 <p style="font-size: 18px;font-style: italic;">
     <br>
     You can see an interactive week at a glance using the table below. 
     <br>
     To check or create information for partners, volunteers, or events, use the navigation in the page header. 
 </p>
+
 <div>
+    <!--This section exclusively displays the weekly event calendar-->
     <h2>This Week's Events</h2>
     {% if event %}
     <center>
     <div style= "margin: 12px 10%;">
+
         <table style="font-size: 24px;">
             <th>Event Name</th>
             <th>Event Date</th>
             <th>Volunteer Spots Filled</th>
+
             {% for event in event %}
+            <!--For all events within 7 days of today
+            iterate through the list-->
+
             <tr>
                 <td><a href="{% url 'show_event' event.pk %}">{{event.event_name}}</a></td>
                 <td>{{event.service_date}}</td>
                 <td>{{event.attendance}}/{{event.capacity}}</td>
             </tr>
             {% endfor %}
+
     </table>
 </div>
+
 </center>
-{% else %}
+{% else %}<!--If there are no events going on, you're prompted to make one-->
 There are no events this week, would you like to <a href = "{% url 'add_event' %}">add one?</a>
 {% endif %}
 </center>
 </div>
 <br>
+
 <center>
     <h2>How to Use the CSC Database Effectively</h2>
 </center>
+<!--This list includes the best practices for the database-->
 <div style= "margin: 12px 10%;">
     <li>Within this database, there are 3 models that you can interact with: Volunteers, Community Partners, and Service Events.</li>
     <li>Pages can be navigated using the toolbar above as well as clicking on any partner, event, or volunteer name as those are hyperlinked with the appropriate pages</li>
@@ -48,9 +67,11 @@ There are no events this week, would you like to <a href = "{% url 'add_event' %
     <li>Volunteer and partner impact reports generate automatically as events associated with each are completed;
      if you miss an event, you can always backdate information using the create/update functions</li>
 </div>
+
 <center>
     <h3>Why does the database exist?</h3>
 </center>
+<!--This paragraph serves as the about text for the project-->
 <p style= "margin: 12px 10%;">
     This database exists so that the Community Service Center can more effectively track all of the models above and track the relative impact of the service.
     Some examples of this include seeing past volunteers at a community partner or having volunteer recommendations for a service event.
@@ -59,7 +80,8 @@ There are no events this week, would you like to <a href = "{% url 'add_event' %
     it should be up to the CSC team to figure out what certain service opportunities are worth.
     For all external-facing inquiries or information, please use the <a href="https://www.bu.edu/csc/">CSC's regular website</a>.
 </p>
-{% else %}
+
+{% else %}<!--If not logged into Django auth-->
 Please <a href = "{% url 'login' %}">log in</a> to the database to view this page. 
 </body>
 {% endif %}

@@ -1,28 +1,36 @@
-<!--base.html
-Tristan Tew (ttew@bu.edu
-This code creates the top and bottom banner for 
+<!--name: base.html
+author: Tristan Tew (ttew@bu.edu)
+description: This code creates the top and bottom banner for 
 the CSC database-->
+
 <head>
     <link rel="stylesheet" type="text/css" href="https://cs-people.bu.edu/ttew/assets/css/main.css">
 </head>
+<!--This website uses a CSS stylesheet to give its appearance-->
+
 <html style="margin: 5px 1%;">
     <!--navigation links-->
+
         <table>
             <colgroup>
                 <col span="1" width="15%">
             </colgroup>
+
             <tr style="font-size: 20px;">
                 <td><a style="all:unset" href="{% url 'home' %}"><img src="https://www.bu.edu/csc/files/titlebar.gif"></a></td>
+                <!--Static Image used as the home button-->
                 <td><a style="all:unset" href = "{% url 'all_partners' %}">Partner Database</a></td>
                 <td><a style="all:unset" href = "{% url 'all_volunteers' %}">Volunteer Database</a></td>
                 <td><a style="all:unset" href = "{% url 'all_events' %}">Event Database</a></td>
                 <td><a style="all:unset" href = "{% url 'logout' %}">Sign out</a></td>
             </tr>
+
         </table>
-    <!-- this content block will be filled in by another template
-    which extends this base.html page. -->
+
+    <!-- everything above will populate on all pages as the navigation header -->
     {% block content %}
     {% endblock %}
+    <!--Everything below here is the bottom bar of each page-->
 
     <hr>
     <p>
@@ -34,4 +42,5 @@ the CSC database-->
         information was used in the creation of this demo. 
     </center>
     </p>
+    
 </html>

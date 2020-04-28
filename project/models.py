@@ -15,11 +15,17 @@ class Volunteer(models.Model):
 
     #Data attributes of the CSC Volunteer 
     first_name = models.TextField(blank=False)
+
     last_name = models.TextField(blank=False)
+
     phone = PhoneNumberField(blank=False) #nomenclature is different to work with the downloaded package
+
     email = models.EmailField(blank=False)
+
     bu_id = models.CharField(blank=False, max_length=9)
+
     class_year = models.CharField(blank=False, max_length=4)
+
     service_events = models.ManyToManyField('ServiceEvent', blank=True) 
     #relationship: A volunteer can attend many events and many vols can go to many events
     
@@ -31,7 +37,9 @@ class Volunteer(models.Model):
         Education = 'Education'
         Equity = 'Racial Equity'
         Womens = 'Empowerment of women'
-    pref_service= models.CharField(max_length = 100, choices=PrefService.choices) # actual field that tracks the preference
+
+    pref_service= models.CharField(max_length = 100, choices=PrefService.choices) 
+    # actual field that tracks the preference
 
     def __str__(self):
         '''return a string representation of the Volunteer Class'''
@@ -45,7 +53,7 @@ class Volunteer(models.Model):
     def event_list(self): 
         '''List of events for a volunteer to be added to'''
 
-        list_ev = ServiceEvent.objects.all()
+        list_ev = ServiceEvent.objects.all() # a list of all events to add a volunteer to
 
         return list_ev
 
@@ -117,8 +125,12 @@ class CommunityPartner(models.Model):
  
     #Data attributes of the CSC Community Partners
     cp_name = models.TextField(blank=False)
+
     cp_address = models.TextField(blank=False)
+
     cp_image = models.ImageField(blank=True)
+    #there may be one off partners without a picture, so it is not mandatory
+
     cp_mission = models.TextField(blank=False)
 
     class ServiceType(models.TextChoices):
@@ -128,6 +140,7 @@ class CommunityPartner(models.Model):
         Education = 'Education'
         Equity = 'Racial Equity'
         Womens = 'Empowerment of women'
+
     cp_type= models.CharField(max_length=100, choices=ServiceType.choices, blank=False)
 
     def __str__(self):
@@ -142,10 +155,13 @@ class CommunityPartner(models.Model):
     def past_volunteers(self):
         '''Return a list of volunteers who've served here before'''
 
+        #find all of the old events for a partner
         events = self.old_events()
 
+        #filter volunteers by those who attended the events in the list above
         volunteers = Volunteer.objects.filter(service_events__in=events)
 
+        #return the past volunteers
         return volunteers
 
     def events_calendar(self):
@@ -229,13 +245,21 @@ class ServiceEvent(models.Model):
 
     #Data attributes of a CSC Service Event
     event_name = models.TextField(blank=False)
+
     cp = models.ForeignKey('CommunityPartner', on_delete=models.CASCADE, blank=False) 
-    # relationship; many service events can happen at a cp and a cp can have many service events
+    # relationship; many service events can happen at a cp, 
+    # but one instance of an event can only have one cp
+
     event_description = models.TextField(blank=False)
+
     service_date = models.DateField(blank=False)#split from datetime field to display cleaner
+
     start_time = models.TimeField(blank=False)#split from datetime field to display cleaner
+
     duration = models.DecimalField(blank=False, max_digits= 5, decimal_places = 2)
+
     capacity = models.IntegerField(blank=False)
+
     service_value = models.DecimalField(blank=False, max_digits=4, decimal_places=2)
 
     def __str__(self):
@@ -267,7 +291,6 @@ class ServiceEvent(models.Model):
         all_vol = vols_cp|vols_list
 
         #now make it unique 
-
         unique_vols = all_vol.distinct()
 
         #return our unique list of recommendations that are not alreaedy on the event
@@ -281,6 +304,7 @@ class ServiceEvent(models.Model):
         #excludes volunteers that are already signed up for the event
         vols = Volunteer.objects.exclude(service_events=self.pk).order_by('last_name')
 
+        #return the list of volunteers that have not yet signed up for an event
         return vols
 
     def volunteer_list(self):
@@ -289,6 +313,7 @@ class ServiceEvent(models.Model):
         #return a list of vols that have this service event attached to them
         vols = Volunteer.objects.filter(service_events=self.pk)
 
+        #return the list of volunteers that are coming to the event
         return vols
 
     def attendance(self):
@@ -315,17 +340,23 @@ class ServiceEvent(models.Model):
         #set up the accumulator variable
         dollars = 0 
 
+        #iterate over the loop
         for volunteer in volunteers:
-
+            
+            #accumulate dollars
             dollars += self.duration * self.service_value
 
+        #return the total dollar amount
         return dollars
 
     def event_vol_count(self):
         '''calculate the total vols per event'''
-
+        
+        #find all volunteers at this event
         vols = Volunteer.objects.filter(service_events=self.pk)
 
+        #Count the number of people at the event
         num_vols = len(vols)
 
+        #return the sum of people
         return num_vols
