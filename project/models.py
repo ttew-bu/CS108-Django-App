@@ -1,8 +1,9 @@
 #models.py
 #Tristan Tew (ttew@bu.edu)
 #This file houses the three models for my CS108 final project database: Volunteers
-#Community Partners, and Service Events will several methods in each to display data
-#effectively on the HTML pages of this Django project. 
+#Community Partners, and Service Events with several methods in each to display hours worked,
+#relationships between models, events completed, and several other accumulator functions per model.
+
 from django.db import models
 from django.urls import *
 from datetime import *
@@ -204,13 +205,13 @@ class CommunityPartner(models.Model):
         '''calculate the hours served at a partner across all events'''
 
         #get the old events
-        oldevents = self.old_events()
+        old_events = self.old_events()
 
         #set accumulator variable
         hours = 0
 
         #create a for loop to iterate through all old events
-        for event in oldevents:
+        for event in old_events:
             
             #the total hours served at a CP adds up for hour served per volunteer per place
             hours += event.duration * event.event_vol_count()
@@ -222,14 +223,14 @@ class CommunityPartner(models.Model):
         '''calculate the monetary value of the total service at a partner'''
 
         #find all of the completed events at a CP
-        oldevents = self.old_events()
+        old_events = self.old_events()
 
         #add up the monetary equivalent with a loop
         #set the accumulator variable
         dollars = 0
 
         #create the for loop
-        for event in oldevents:
+        for event in old_events:
             
             #iterate
             dollars += event.event_value()
@@ -279,10 +280,10 @@ class ServiceEvent(models.Model):
         vol_attend = self.all_vols()
 
         #find the past events of the cp
-        cp_ev = self.cp.old_events()
+        cp_event = self.cp.old_events()
 
         #list of vols who have served at this cp using the previous list
-        vols_cp = vol_attend.filter(service_events__in=cp_ev)
+        vols_cp = vol_attend.filter(service_events__in=cp_event)
 
         #list of vols with matching pref service types 
         vols_list = vol_attend.filter(pref_service=self.cp.cp_type)
@@ -356,7 +357,7 @@ class ServiceEvent(models.Model):
         vols = Volunteer.objects.filter(service_events=self.pk)
 
         #Count the number of people at the event
-        num_vols = len(vols)
+        number_vols = len(vols)
 
         #return the sum of people
-        return num_vols
+        return number_vols

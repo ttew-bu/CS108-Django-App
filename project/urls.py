@@ -1,7 +1,8 @@
 #urls.py
 #Tristan Tew (ttew@bu.edu)
 #Urls page for CSC database that will allow the 
-#user to interact with pages within this application
+#user to interact with pages within this application,
+#complete delete/add methods, and navigate using hyperlinks
 
 from django.urls import path, include #include allows us to use the built-in accounts feature
 from .views import * #import the class definitions

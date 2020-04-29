@@ -1,7 +1,8 @@
 #forms.py
 #tristan tew (ttew@bu.edu)
 #Below are the necessary forms to relate submission buttons on the
-#database to the models created on models.py 
+#database to the models created on models.py; they include create forms,
+#delete forms, update forms, and associated meta subclasses
 
 from django import forms
 from .models import *
