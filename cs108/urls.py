@@ -21,7 +21,7 @@ from django.conf import settings
 #project-level URL patterns
 urlpatterns = [
     #set root to project, make it easier to find this
-    path('admin/', include('project.urls')),
+    path('/', include('project.urls')),
     path('admin/', admin.site.urls),
     path('hw/', include('hello_world.urls')),
     path('pages/', include('pages.urls')), ##old! link in URLS from our app
